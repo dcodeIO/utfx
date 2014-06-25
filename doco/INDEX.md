@@ -9,7 +9,6 @@ utfx namespace.
 ### Class [TruncatedError](TruncatedError.md)
 
 An error indicating a truncated source. Contains the remaining bytes as an array in its `bytes` property.
-
 ### decodeUTF8(src, dst)
 
 Decodes an arbitrary input source of UTF8 bytes to UTF8 code points.
@@ -79,13 +78,13 @@ Converts an arbitrary input source of UTF8 code points to an arbitrary output de
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a code point is invalid 
 
-### fromCodePoint(})
+### fromCodePoint(var_args)
 
 A polyfill for String.fromCodePoint.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
-| }               | *...[number*    | var_args Code points 
+| var_args        | *...number*     | Code points 
 | **@returns**    | *string*        | Standard JavaScript string 
 
 ### codePointAt(s, i)

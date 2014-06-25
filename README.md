@@ -95,7 +95,7 @@ A polyfill for String.fromCodePoint.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
-| }               | *...[number*    | var_args Code points 
+| var_args        | *...number*     | Code points 
 | **@returns**    | *string*        | Standard JavaScript string 
 
 ### codePointAt(s, i)
