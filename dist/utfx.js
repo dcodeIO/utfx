@@ -13,11 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+/**
+ * @license utfx (c) 2014 Daniel Wirtz <dcode@dcode.io>
+ * Released under the Apache License, Version 2.0
+ * see: https://github.com/dcodeIO/utfx for details
+ */
 (function(global) {
     "use strict";
 
     /**
-     * A minimalistic library to process, convert, encode and decode UTF8 / UTF16 in JavaScript.
+     * utfx namespace.
      * @exports utfx
      * @type {!Object.<string,*>}
      */
@@ -218,8 +223,8 @@
      * Calculates the number of UTF8 bytes required to store an arbitrary input source of UTF16 characters when
      *  converted to UTF8 code points.
      * @param {(function():number|null) | !Array.<number> | string} src Characters source, either as a function returning
-     *  the next character respectively `null` if there are no more characters left, an array of characters or a
-     *  standard JavaScript string.
+     *  the next character code respectively `null` if there are no more characters left, an array of character codes or
+     *  a standard JavaScript string.
      * @returns {number} Number of UTF8 bytes required
      * @throws {TypeError} If arguments are invalid
      * @throws {RangeError} If an intermediate code point is invalid in UTF8
@@ -241,8 +246,8 @@
     /**
      * Converts an arbitrary input source of UTF16 characters to an arbitrary output destination of UTF8 code points.
      * @param {(function():number|null) | !Array.<number> | string} src Characters source, either as a function returning
-     *  the next character respectively `null` if there are no more characters left, an array of characters or a
-     *  standard JavaScript string.
+     *  the next character code respectively `null` if there are no more characters left, an array of character codes or
+     *  a standard JavaScript string.
      * @param {function(number) | Array.<number>} dst Code points destination, either as a function successively called
      *  with the each converted code point or an array to be filled with the converted code points.
      * @throws {TypeError} If arguments are invalid
@@ -281,8 +286,8 @@
      * @param {(function():number|null) | !Array.<number>} src Code points source, either as a function returning the
      *  next code point respectively `null` if there are no more code points left or an array of code points.
      * @param {function(number) | !Array.<number> | undefined} dst Characters destination, either as a function
-     *  successively called with each converted character, an array to be filled with the converted characters or
-     *  omitted to make this function return a standard JavaScript string.
+     *  successively called with each converted character code, an array to be filled with the converted character codes
+     *  or omitted to make this function return a standard JavaScript string.
      * @returns {undefined|string} A standard JavaScript string if `dst` has been omitted, otherwise `undefined`
      * @throws {TypeError} If arguments are invalid
      * @throws {RangeError} If a code point is invalid
