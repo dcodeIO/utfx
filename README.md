@@ -1,6 +1,6 @@
-utfx
+![utfx - A compact library to process, convert, encode and decode UTF8 / UTF16 in JavaScript.](https://raw.github.com/dcodeIO/utfx/master/utfx.png)
 ====
-utfx is a minimalistic library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using arbitrary sources
+**utfx** is a compact library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using arbitrary sources
 and destinations through the use of callbacks. Includes polyfills for `String.fromCodePoint` and `String#codePointAt`.
 
 ### Background

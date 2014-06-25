@@ -406,7 +406,7 @@
     };
 
     /**
-     * A polyfill for String.fromCodePoint.
+     * A polyfill for `String.fromCodePoint`.
      * @param {...number} var_args Code points
      * @returns {string} Standard JavaScript string
      * @throws {TypeError} If arguments are invalid or a code point is invalid
@@ -418,7 +418,7 @@
     };
 
     /**
-     * A polyfill for String.prototype.codePointAt.
+     * A polyfill for `String#codePointAt`.
      * @param {string} s Standard JavaScript string
      * @param {number} i Index
      * @returns {number|undefined} Code point or `undefined` if `i` is out of range
