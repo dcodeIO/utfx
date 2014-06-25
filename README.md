@@ -1,7 +1,8 @@
 utfx
 ====
-utfx is a minimalistic (about 3 KB) library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using
-arbitrary sources and destinations through the use of callbacks.
+utfx is a minimalistic (about 3.5 KB) library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using
+arbitrary sources and destinations through the use of callbacks, including polyfills for `String.fromCodePoint` and
+`String#codePointAt`.
 
 ### Background
 
@@ -18,6 +19,7 @@ API
 ### Class [TruncatedError](doco/TruncatedError.md)
 
 An error indicating a truncated source. Contains the remaining bytes as its `bytes` property.
+
 ### decodeUTF8(src, dst)
 
 Decodes an arbitrary input source of UTF8 bytes to UTF8 code points.
@@ -28,7 +30,7 @@ Decodes an arbitrary input source of UTF8 bytes to UTF8 code points.
 | dst             | *function(number) &#124; Array.&lt;number&gt;* | Code points destination, either as a function successively called with each decoded code point or an array to be filled with the decoded code points. 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a starting byte is invalid in UTF8 
-| **@throws**     | *utfx.TruncatedError* | If the last sequence is truncated. Has a property `bytes` holding the remaining bytes. 
+| **@throws**     | *utfx.TruncatedError* | If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes. 
 
 ### encodeUTF8(src, dst)
 
@@ -72,7 +74,7 @@ Converts an arbitrary input source of UTF16 characters to an arbitrary output de
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null) &#124; !Array.&lt;number&gt; &#124; string* | Characters source, either as a function returning the next character code respectively `null` if there are no more characters left, an array of character codes or a standard JavaScript string. 
-| dst             | *function(number) &#124; Array.&lt;number&gt;* | Code points destination, either as a function successively called with the each converted code point or an array to be filled with the converted code points. 
+| dst             | *function(number) &#124; Array.&lt;number&gt;* | Code points destination, either as a function successively called with each converted code point or an array to be filled with the converted code points. 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 
 ### UTF8toUTF16(src, dst)
@@ -86,6 +88,33 @@ Converts an arbitrary input source of UTF8 code points to an arbitrary output de
 | **@returns**    | *undefined &#124; string* | A standard JavaScript string if `dst` has been omitted, otherwise `undefined` 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a code point is invalid 
+
+### fromCodePoint(})
+
+A polyfill for String.fromCodePoint.
+
+| Parameter       | Type            | Description
+|-----------------|-----------------|---------------
+| }               | *...[number*    | var_args Code points 
+| **@returns**    | *string*        | Standard JavaScript string 
+
+### codePointAt(s, i)
+
+A polyfill for String.prototype.codePointAt.
+
+| Parameter       | Type            | Description
+|-----------------|-----------------|---------------
+| s               | *string*        | Standard JavaScript string 
+| i               | *number*        | Index 
+| **@returns**    | *number*        | Code point 
+
+### polyfill(override=)
+
+Installs utfx as a polyfill for `String.fromCodePoint` and `String#codePointAt` if not implemented.
+
+| Parameter       | Type            | Description
+|-----------------|-----------------|---------------
+| override        | *boolean*       | Overrides an existing implementation if `true`, defaults to `false` 
 
 Downloads
 ---------

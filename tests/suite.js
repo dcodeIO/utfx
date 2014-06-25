@@ -1,6 +1,6 @@
 var utfx = require(__dirname+"/../index.js");
 
-// Test string as string, bytes, char codes and code points
+// Test string as standard string, char codes, code points, bytes and binary string
 var string = "ä☺𠜎️☁️",
     charcodes = string.split('').map(function(s) { return s.charCodeAt(0); }),
     codepoints = [0xE4, 0x263A, 0x2070E, 0xfe0f, 0x2601, 0xfe0f],
@@ -78,7 +78,27 @@ module.exports = {
             test.ok(e instanceof utfx.TruncatedError);
             test.deepEqual(e.bytes, bytes.slice(bytes.length-6, bytes.length-4));
         }
-        test.ok(thrown);        
+        test.ok(thrown);
+        test.done();
+    },
+    
+    "fromCodePoint": function(test) {
+        test.strictEqual(utfx.fromCodePoint.apply(null, codepoints), string);
+        test.done();
+    },
+    
+    "codePointAt": function(test) {
+        test.strictEqual(utfx.codePointAt(string, 2), codepoints[2]);
+        test.done();
+    },
+    
+    "polyfill": function(test) {
+        var codePointAt = String.prototype.codePointAt;
+        utfx.polyfill(true);
+        test.strictEqual(utfx.fromCodePoint, String.fromCodePoint);
+        test.notStrictEqual(codePointAt, String.prototype.codePointAt);
+        test.strictEqual(String.fromCodePoint.apply(null, codepoints), string);
+        test.strictEqual(string.codePointAt(2), codepoints[2]);
         test.done();
     }
 };

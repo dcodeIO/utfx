@@ -19,7 +19,7 @@
  * Released under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/utfx for details
  */
-(function(global) {
+(function(global, String) {
     "use strict";
 
     /**
@@ -252,7 +252,7 @@
      *  the next character code respectively `null` if there are no more characters left, an array of character codes or
      *  a standard JavaScript string.
      * @param {function(number) | Array.<number>} dst Code points destination, either as a function successively called
-     *  with the each converted code point or an array to be filled with the converted code points.
+     *  with each converted code point or an array to be filled with the converted code points.
      * @throws {TypeError} If arguments are invalid
      * @expose
      */
@@ -318,6 +318,45 @@
         if (Array.isArray(dst['_cs']))
             return stringFromCharCode.apply(String, dst['_cs']);
     };
+
+    /**
+     * A polyfill for String.fromCodePoint.
+     * @param {...[number]} var_args Code points
+     * @returns {string} Standard JavaScript string
+     * @expose
+     */
+    utfx.fromCodePoint = function(var_args) {
+        return utfx.UTF8toUTF16(Array.prototype.slice.apply(arguments));
+    };
+
+    /**
+     * A polyfill for String.prototype.codePointAt.
+     * @param {string} s Standard JavaScript string
+     * @param {number} i Index
+     * @returns {number} Code point
+     * @expose
+     */
+    utfx.codePointAt = function(s, i) {
+        var cp;
+        utfx.UTF16toUTF8(function() {
+            return typeof cp === 'undefined' && i < s.length ? s.charCodeAt(i++) : null;
+        }, function(icp) {
+            cp = icp;
+        });
+        return cp;
+    };
+
+    /**
+     * Installs utfx as a polyfill for `String.fromCodePoint` and `String#codePointAt` if not implemented.
+     * @param {boolean=} override Overrides an existing implementation if `true`, defaults to `false`
+     * @expose
+     */
+    utfx.polyfill = function(override) {
+        if (!String['fromCodePoint'] || override)
+            String['fromCodePoint'] = utfx.fromCodePoint;
+        if (!String.prototype['codePointAt'] || override)
+            String.prototype['codePointAt'] = function(i) { return utfx.codePointAt(this, i); };
+    };
     
     if (typeof module === 'object' && module && module['exports']) {
         module['exports'] = utfx;
@@ -328,4 +367,4 @@
         global['dcodeIO']['utfx'] = utfx;
     }
     
-})(this);
+})(this, String);
