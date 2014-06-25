@@ -89,7 +89,7 @@ Converts an arbitrary input source of UTF8 code points to an arbitrary output de
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a code point is invalid 
 
-### fromCodePoint(})
+### fromCodePoint(var_args)
 
 A polyfill for String.fromCodePoint.
 
