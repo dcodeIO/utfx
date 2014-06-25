@@ -1,8 +1,7 @@
 utfx
 ====
-utfx is a minimalistic (about 3.5 KB) library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using
-arbitrary sources and destinations through the use of callbacks, including polyfills for `String.fromCodePoint` and
-`String#codePointAt`.
+utfx is a minimalistic library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using arbitrary sources
+and destinations through the use of callbacks. Includes polyfills for `String.fromCodePoint` and `String#codePointAt`.
 
 ### Background
 
@@ -62,7 +61,7 @@ converted to UTF8 code points.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
-| src             | *function():(number &#124; null) &#124; !Array.&lt;number&gt; &#124; string* | Characters source, either as a function returning the next character code respectively `null` if there are no more characters left, an array of character codes or a standard JavaScript string. 
+| src             | *function():(number &#124; null) &#124; !Array.&lt;number&gt; &#124; string* | Characters source, either as a function returning the next char code respectively `null` if there are no more characters left, an array of char codes or a standard JavaScript string. 
 | **@returns**    | *number*        | Number of UTF8 bytes required 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If an intermediate code point is invalid in UTF8 
@@ -73,9 +72,10 @@ Converts an arbitrary input source of UTF16 characters to an arbitrary output de
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
-| src             | *function():(number &#124; null) &#124; !Array.&lt;number&gt; &#124; string* | Characters source, either as a function returning the next character code respectively `null` if there are no more characters left, an array of character codes or a standard JavaScript string. 
+| src             | *function():(number &#124; null) &#124; !Array.&lt;number&gt; &#124; string* | Characters source, either as a function returning the next char code respectively `null` if there are no more characters left, an array of char codes or a standard JavaScript string. 
 | dst             | *function(number) &#124; Array.&lt;number&gt;* | Code points destination, either as a function successively called with each converted code point or an array to be filled with the converted code points. 
-| **@throws**     | *TypeError*     | If arguments are invalid 
+| **@throws**     | *TypeError*     | If arguments are invalid or a char code is invalid 
+| **@throws**     | *RangeError*    | If a char code is out of range 
 
 ### UTF8toUTF16(src, dst)
 
@@ -84,10 +84,10 @@ Converts an arbitrary input source of UTF8 code points to an arbitrary output de
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null) &#124; !Array.&lt;number&gt;* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left or an array of code points. 
-| dst             | *function(number) &#124; !Array.&lt;number&gt; &#124; undefined* | Characters destination, either as a function successively called with each converted character code, an array to be filled with the converted character codes or omitted to make this function return a standard JavaScript string. 
+| dst             | *function(number) &#124; !Array.&lt;number&gt; &#124; undefined* | Characters destination, either as a function successively called with each converted char code, an array to be filled with the converted char codes or omitted to make this function return a standard JavaScript string. 
 | **@returns**    | *undefined &#124; string* | A standard JavaScript string if `dst` has been omitted, otherwise `undefined` 
-| **@throws**     | *TypeError*     | If arguments are invalid 
-| **@throws**     | *RangeError*    | If a code point is invalid 
+| **@throws**     | *TypeError*     | If arguments are invalid or a code point is invalid 
+| **@throws**     | *RangeError*    | If a code point is out of range 
 
 ### fromCodePoint(var_args)
 
@@ -97,6 +97,8 @@ A polyfill for String.fromCodePoint.
 |-----------------|-----------------|---------------
 | var_args        | *...number*     | Code points 
 | **@returns**    | *string*        | Standard JavaScript string 
+| **@throws**     | *TypeError*     | If arguments are invalid or a code point is invalid 
+| **@throws**     | *RangeError*    | If a code point is out of range 
 
 ### codePointAt(s, i)
 
@@ -107,6 +109,7 @@ A polyfill for String.prototype.codePointAt.
 | s               | *string*        | Standard JavaScript string 
 | i               | *number*        | Index 
 | **@returns**    | *number*        | Code point 
+| **@throws**     | *TypeError*     | If arguments are invalid 
 
 ### polyfill(override=)
 

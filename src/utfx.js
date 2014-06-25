@@ -126,7 +126,7 @@
         if (Array.isArray(dst))
             dst = arrayDestination(dst);
         if (typeof src !== 'function' || typeof dst !== 'function')
-            throw TypeError("Illegal arguments: "+(typeof src)+", "+(typeof dst));
+            throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
         var a, b, c, d, t = function(b) {
             throw utfx.TruncatedError(b.slice(0, b.indexOf(null)));
         };
@@ -172,7 +172,7 @@
         else if (Array.isArray(dst))
             dst = arrayDestination(dst);
         if (typeof src !== 'function' || typeof dst !== 'function')
-            throw TypeError("Illegal arguments: "+(typeof src)+", "+(typeof dst));
+            throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
         var cp;
         while ((cp = src()) !== null) {
             if (cp < 0 || cp > 0x10FFFF)
@@ -209,7 +209,7 @@
         if (Array.isArray(src))
             src = arraySource(src);
         if (typeof src !== 'function')
-            throw TypeError("Illegal arguments: "+(typeof src));
+            throw TypeError("Illegal arguments: "+(typeof arguments[0]));
         var cp, n=0;
         while ((cp = src()) !== null) {
             if (cp < 0 || cp > 0x10FFFF)
@@ -225,8 +225,8 @@
     /**
      * Calculates the number of UTF8 bytes required to store an arbitrary input source of UTF16 characters when
      *  converted to UTF8 code points.
-     * @param {(function():number|null) | !Array.<number> | string} src Characters source, either as a function returning
-     *  the next character code respectively `null` if there are no more characters left, an array of character codes or
+     * @param {(function():number|null) | !Array.<number> | string} src Characters source, either as a function
+     *  returning the next char code respectively `null` if there are no more characters left, an array of char codes or
      *  a standard JavaScript string.
      * @returns {number} Number of UTF8 bytes required
      * @throws {TypeError} If arguments are invalid
@@ -248,12 +248,13 @@
 
     /**
      * Converts an arbitrary input source of UTF16 characters to an arbitrary output destination of UTF8 code points.
-     * @param {(function():number|null) | !Array.<number> | string} src Characters source, either as a function returning
-     *  the next character code respectively `null` if there are no more characters left, an array of character codes or
+     * @param {(function():number|null) | !Array.<number> | string} src Characters source, either as a function
+     *  returning the next char code respectively `null` if there are no more characters left, an array of char codes or
      *  a standard JavaScript string.
      * @param {function(number) | Array.<number>} dst Code points destination, either as a function successively called
      *  with each converted code point or an array to be filled with the converted code points.
-     * @throws {TypeError} If arguments are invalid
+     * @throws {TypeError} If arguments are invalid or a char code is invalid
+     * @throws {RangeError} If a char code is out of range
      * @expose
      */
     utfx.UTF16toUTF8 = function(src, dst) {
@@ -264,16 +265,25 @@
         if (Array.isArray(dst))
             dst = arrayDestination(dst);
         if (typeof src !== 'function' || typeof dst !== 'function')
-            throw TypeError("Illegal arguments: "+(typeof src)+", "+(typeof dst));
-        var c1, c2 = null;
+            throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
+        var c1, c2 = null, t = function(c) {
+            if (typeof c !== 'number' || c !== c)
+                throw TypeError("Illegal char code: "+c);
+            if (c < 0 || c > 0xFFFF)
+                throw RangeError("Illegal char code: "+c1);
+        };
         while (true) {
             c1 = c2 !== null ? c2 : src();
             if (c1 === null) break;
+            t(c1);
             if (c1 >= 0xD800 && c1 <= 0xDFFF) {
                 c2 = src();
-                if (c2 !== null && c2 >= 0xDC00 && c2 <= 0xDFFF) {
-                    dst((c1-0xD800)*0x400+c2-0xDC00+0x10000);
-                    c2 = null; continue;
+                if (c2 !== null) {
+                    t(c2);
+                    if (c2 >= 0xDC00 && c2 <= 0xDFFF) {
+                        dst((c1-0xD800)*0x400+c2-0xDC00+0x10000);
+                        c2 = null; continue;
+                    }
                 }
             }
             dst(c1);
@@ -286,11 +296,11 @@
      * @param {(function():number|null) | !Array.<number>} src Code points source, either as a function returning the
      *  next code point respectively `null` if there are no more code points left or an array of code points.
      * @param {function(number) | !Array.<number> | undefined} dst Characters destination, either as a function
-     *  successively called with each converted character code, an array to be filled with the converted character codes
-     *  or omitted to make this function return a standard JavaScript string.
+     *  successively called with each converted char code, an array to be filled with the converted char codes or
+     *  omitted to make this function return a standard JavaScript string.
      * @returns {undefined|string} A standard JavaScript string if `dst` has been omitted, otherwise `undefined`
-     * @throws {TypeError} If arguments are invalid
-     * @throws {RangeError} If a code point is invalid
+     * @throws {TypeError} If arguments are invalid or a code point is invalid
+     * @throws {RangeError} If a code point is out of range
      * @expose
      */
     utfx.UTF8toUTF16 = function(src, dst) {
@@ -301,11 +311,13 @@
         else if (Array.isArray(dst))
             dst = arrayDestination(dst);
         if (typeof src !== 'function' || typeof dst !== 'function')
-            throw TypeError("Illegal arguments: "+(typeof src)+", "+(typeof dst));
+            throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
         var cp, res;
         if (typeof dst === 'undefined')
             dst = (res = []).push.bind(res);
         while ((cp = src()) !== null) {
+            if (typeof cp !== 'number' || cp !== cp)
+                throw TypeError("Illegal code point: "+cp);
             if (cp < 0 || cp > 0x10FFFF)
                 throw RangeError("Illegal code point: "+cp);
             if (cp <= 0xFFFF)
@@ -323,6 +335,8 @@
      * A polyfill for String.fromCodePoint.
      * @param {...number} var_args Code points
      * @returns {string} Standard JavaScript string
+     * @throws {TypeError} If arguments are invalid or a code point is invalid
+     * @throws {RangeError} If a code point is out of range
      * @expose
      */
     utfx.fromCodePoint = function(var_args) {
@@ -334,9 +348,12 @@
      * @param {string} s Standard JavaScript string
      * @param {number} i Index
      * @returns {number} Code point
+     * @throws {TypeError} If arguments are invalid
      * @expose
      */
     utfx.codePointAt = function(s, i) {
+        if (typeof s !== 'string' || typeof i !== 'number')
+            throw TypeError("Illegal arguments: "+(typeof s)+", "+(typeof i));
         var cp;
         utfx.UTF16toUTF8(function() {
             return typeof cp === 'undefined' && i < s.length ? s.charCodeAt(i++) : null;
