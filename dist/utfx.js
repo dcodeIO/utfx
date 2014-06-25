@@ -349,6 +349,7 @@
     /**
      * Installs utfx as a polyfill for `String.fromCodePoint` and `String#codePointAt` if not implemented.
      * @param {boolean=} override Overrides an existing implementation if `true`, defaults to `false`
+     * @returns {!Object.<string,*>} utfx namespace
      * @expose
      */
     utfx.polyfill = function(override) {
@@ -356,6 +357,7 @@
             String['fromCodePoint'] = utfx.fromCodePoint;
         if (!String.prototype['codePointAt'] || override)
             String.prototype['codePointAt'] = function(i) { return utfx.codePointAt(this, i); };
+        return utfx;
     };
     
     if (typeof module === 'object' && module && module['exports']) {

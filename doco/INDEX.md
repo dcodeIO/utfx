@@ -104,6 +104,7 @@ Installs utfx as a polyfill for `String.fromCodePoint` and `String#codePointAt` 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | override        | *boolean*       | Overrides an existing implementation if `true`, defaults to `false` 
+| **@returns**    | *!Object.&lt;string,*&gt;* | utfx namespace 
 
 
 ---

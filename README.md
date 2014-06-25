@@ -18,7 +18,7 @@ API
 
 ### Class [TruncatedError](doco/TruncatedError.md)
 
-An error indicating a truncated source. Contains the remaining bytes as its `bytes` property.
+An error indicating a truncated source. Contains the remaining bytes as an array in its `bytes` property.
 
 ### decodeUTF8(src, dst)
 
@@ -115,17 +115,18 @@ Installs utfx as a polyfill for `String.fromCodePoint` and `String#codePointAt` 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | override        | *boolean*       | Overrides an existing implementation if `true`, defaults to `false` 
+| **@returns**    | *!Object.&lt;string,*&gt;* | utfx namespace 
 
 Usage
 -----
-* **node.js**:  `npm install utfx`
+* **node.js**: `npm install utfx`   
    
    ```js
    var utfx = require("utfx");
    ...
    ```
 
-* **Browser**: `<script src="/path/to/utfx.min.js"></script>`
+* **Browser**: `<script src="/path/to/utfx.min.js"></script>`   
    
    ```js
    var utfx = dcodeIO.utfx;
@@ -141,7 +142,7 @@ Usage
        }
    });
    require(["utfx"], function(utfx) {
-     ...
+       ...
    }
    ```
 
