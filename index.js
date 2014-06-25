@@ -14,6 +14,6 @@
  limitations under the License.
  */
 var path = require("path"),
-    utfx = require(path.join(__dirname, "src", "utfx.js"));
+    utfx = require(path.join(__dirname, "dist", "utfx.js"));
 
 module.exports = utfx;
