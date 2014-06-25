@@ -13,42 +13,7 @@ var string = "ä☺𠜎️☁️",
     binarystring = String.fromCharCode.apply(String, bytes);
 
 module.exports = {
-    
-    UTF16toUTF8: function(test) {
-        // Array source and destination (implicitly tests function)
-        var out = [];
-        utfx.UTF16toUTF8(charcodes, out);
-        test.deepEqual(out, codepoints);
-        // String source
-        out = [];
-        utfx.UTF16toUTF8(string, out);
-        test.deepEqual(out, codepoints);
-        test.done();
-    },
-    
-    UTF8toUTF16: function(test) {
-        // Array source and destination (implicitly tests function)
-        var out = [];
-        utfx.UTF8toUTF16(codepoints, out);
-        test.deepEqual(out, charcodes);
-        // String destination (omitted dst, returns)
-        test.strictEqual(utfx.UTF8toUTF16(codepoints), string);
-        test.done();
-    },
-    
-    calculateUTF8: function(test) {
-        test.strictEqual(utfx.calculateUTF8(codepoints), bytes.length);
-        test.done();
-    },
-    
-    calculateUTF16asUTF8: function(test) {
-        // Array source (implicitly tests function)
-        test.strictEqual(utfx.calculateUTF16asUTF8(charcodes), bytes.length);
-        // String source
-        test.strictEqual(utfx.calculateUTF16asUTF8(string), bytes.length);
-        test.done();
-    },
-    
+
     encodeUTF8: function(test) {
         // Array source and destination (implicitly tests function)
         var out = [];
@@ -58,7 +23,7 @@ module.exports = {
         test.strictEqual(utfx.encodeUTF8(codepoints), binarystring);
         test.done();
     },
-    
+
     decodeUTF8: function(test) {
         // Array source and destination (implicitly tests function)
         var out = [];
@@ -81,17 +46,72 @@ module.exports = {
         test.ok(thrown);
         test.done();
     },
+
+    UTF16toUTF8: function(test) {
+        // Array source and destination (implicitly tests function)
+        var out = [];
+        utfx.UTF16toUTF8(charcodes, out);
+        test.deepEqual(out, codepoints);
+        // String source
+        out = [];
+        utfx.UTF16toUTF8(string, out);
+        test.deepEqual(out, codepoints);
+        test.done();
+    },
+
+    UTF8toUTF16: function(test) {
+        // Array source and destination (implicitly tests function)
+        var out = [];
+        utfx.UTF8toUTF16(codepoints, out);
+        test.deepEqual(out, charcodes);
+        // String destination (omitted dst, returns)
+        test.strictEqual(utfx.UTF8toUTF16(codepoints), string);
+        test.done();
+    },
+
+    encodeUTF16toUTF8: function(test) {
+        // Array source and destination (implicitly tests function)
+        var out = [];
+        utfx.encodeUTF16toUTF8(charcodes, out);
+        test.deepEqual(out, bytes);
+        // String source and destination
+        test.strictEqual(utfx.encodeUTF16toUTF8(string), binarystring);
+        test.done();
+    },
     
+    decodeUTF8toUTF16: function(test) {
+        // array source and destination (implicitly tests function)
+        var out = [];
+        utfx.decodeUTF8toUTF16(bytes, out);
+        test.deepEqual(out, charcodes);
+        // String destination
+        test.strictEqual(utfx.decodeUTF8toUTF16(bytes), string);
+        test.done();
+    },
+
+    calculateUTF8: function(test) {
+        test.strictEqual(utfx.calculateUTF8(codepoints), bytes.length);
+        test.done();
+    },
+
+    calculateUTF16asUTF8: function(test) {
+        // Array source (implicitly tests function)
+        test.strictEqual(utfx.calculateUTF16asUTF8(charcodes), bytes.length);
+        // String source
+        test.strictEqual(utfx.calculateUTF16asUTF8(string), bytes.length);
+        test.done();
+    },
+
     "fromCodePoint": function(test) {
         test.strictEqual(utfx.fromCodePoint.apply(null, codepoints), string);
         test.done();
     },
-    
+
     "codePointAt": function(test) {
         test.strictEqual(utfx.codePointAt(string, 2), codepoints[2]);
         test.done();
     },
-    
+
     "polyfill": function(test) {
         var codePointAt = String.prototype.codePointAt;
         utfx.polyfill(true);
