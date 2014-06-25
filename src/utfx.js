@@ -347,16 +347,18 @@
      * A polyfill for String.prototype.codePointAt.
      * @param {string} s Standard JavaScript string
      * @param {number} i Index
-     * @returns {number} Code point
+     * @returns {number|undefined} Code point or `undefined` if `i` is out of range
      * @throws {TypeError} If arguments are invalid
      * @expose
      */
     utfx.codePointAt = function(s, i) {
         if (typeof s !== 'string' || typeof i !== 'number')
             throw TypeError("Illegal arguments: "+(typeof s)+", "+(typeof i));
-        var cp;
+        var k, cp;
+        if (i < 0 || i >= (k=s.length))
+            return;
         utfx.UTF16toUTF8(function() {
-            return typeof cp === 'undefined' && i < s.length ? s.charCodeAt(i++) : null;
+            return typeof cp === 'undefined' && i < k ? s.charCodeAt(i++) : null;
         }, function(icp) {
             cp = icp;
         });
