@@ -1,6 +1,6 @@
 ## Class TruncatedError
 
-An error indicating a truncated source.
+An error indicating a truncated source. Contains the remaining bytes as its `bytes` property.
 
 ---
 
