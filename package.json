@@ -1,0 +1,29 @@
+{
+    "name": "utfx",
+    "author": "Daniel Wirtz <dcode@dcode.io>",
+    "version": "0.1.0",
+    "description": "A minimalistic library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using arbitrary sources and destinations through the use of callbacks.",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/utfx.git"
+    },
+    "bugs": {
+        "url": "https://github.com/dcodeIO/utfx/issues"
+    },
+    "keywords": ["charset", "encoding", "unicode", "utf8", "utf16"],
+    "dependencies": {},
+    "devDependencies": {
+        "testjs": "~1"
+    },
+    "license": "Apache-2.0",
+    "engines": {
+        "node": ">=0.8"
+    },
+    "scripts": {
+        "build": "cp src/utfx.js dist/utfx.js",
+        "compile": "ccjs dist/utfx.js --compilation_level=ADVANCED_OPTIMIZATIONS > dist/utfx.min.js",
+        "test": "node node_modules/testjs/bin/testjs tests/suite.js",
+        "make": "npm run-script build && npm run-script compile && npm test"
+    }
+}
