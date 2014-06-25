@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+
 /**
  * @license utfx (c) 2014 Daniel Wirtz <dcode@dcode.io>
  * Released under the Apache License, Version 2.0
@@ -27,6 +28,12 @@
      * @type {!Object.<string,*>}
      */
     var utfx = {};
+
+    /**
+     * @type {function(...[number]):string}
+     * @inner
+     */
+    var stringFromCharCode = String.fromCharCode;
 
     /**
      * Converts an array to a source function.
@@ -75,7 +82,7 @@
 
     /**
      * Constructs a new TruncatedError.
-     * @class An error indicating a truncated source. Contains the remaining bytes as its `bytes` property.
+     * @class An error indicating a truncated source. Contains the remaining bytes as an array in its `bytes` property.
      * @param {!Array.<number>} b Remaining bytes
      * @extends Error
      * @constructor
@@ -107,8 +114,8 @@
      *  with each decoded code point or an array to be filled with the decoded code points.
      * @throws {TypeError} If arguments are invalid
      * @throws {RangeError} If a starting byte is invalid in UTF8
-     * @throws {utfx.TruncatedError} If the last sequence is truncated. Has a property `bytes` holding the remaining
-     *  bytes.
+     * @throws {utfx.TruncatedError} If the last sequence is truncated. Has an array property `bytes` holding the
+     *  remaining bytes.
      * @expose
      */
     utfx.decodeUTF8 = function(src, dst) {
@@ -126,25 +133,22 @@
         while ((a = src()) !== null) {
             if ((a&0x80) === 0)
                 dst(a);
-            else if ((a&0xE0) === 0xC0) {
-                if ((b = src()) === null)
-                    t([a, b]);
+            else if ((a&0xE0) === 0xC0)
+                ((b = src()) === null) && t([a, b]),
                 dst(((a&0x1F)<<6)
                   |  (b&0x3F));
-            } else if ((a&0xF0) === 0xE0) {
-                if ((b=src()) === null || (c=src()) === null)
-                    t([a, b, c]);
+            else if ((a&0xF0) === 0xE0)
+                ((b=src()) === null || (c=src()) === null) && t([a, b, c]),
                 dst(((a&0x0F)<<12)
                   | ((b&0x3F)<<6)
                   |  (c&0x3F));
-            } else if ((a&0xF8) === 0xF0) {
-                if ((b=src()) === null || (c=src()) === null || (d=src()) === null)
-                    t([a, b, c ,d]);
+            else if ((a&0xF8) === 0xF0)
+                ((b=src()) === null || (c=src()) === null || (d=src()) === null) && t([a, b, c ,d]),
                 dst(((a&0x07)<<18)
                   | ((b&0x3F)<<12)
                   | ((c&0x3F)<<6)
                   |  (d&0x3F));
-            } else throw RangeError("Illegal starting byte: "+a);
+            else throw RangeError("Illegal starting byte: "+a);
         }
     };
 
@@ -175,22 +179,21 @@
                 throw RangeError("Illegal code point: "+cp);
             if (cp < 0x80)
                 dst(cp&0x7F1);
-            else if (cp < 0x800) {
-                dst(((cp>>6)&0x1F)|0xC0);
+            else if (cp < 0x800)
+                dst(((cp>>6)&0x1F)|0xC0),
                 dst((cp&0x3F)|0x80);
-            } else if (cp < 0x10000) {
-                dst(((cp>>12)&0x0F)|0xE0);
-                dst(((cp>> 6)&0x3F)|0x80);
+            else if (cp < 0x10000)
+                dst(((cp>>12)&0x0F)|0xE0),
+                dst(((cp>> 6)&0x3F)|0x80),
                 dst((cp&0x3F)|0x80);
-            } else { 
-                dst(((cp>>18)&0x07)|0xF0);
-                dst(((cp>>12)&0x3F)|0x80);
-                dst(((cp>> 6)&0x3F)|0x80);
+            else 
+                dst(((cp>>18)&0x07)|0xF0),
+                dst(((cp>>12)&0x3F)|0x80),
+                dst(((cp>> 6)&0x3F)|0x80),
                 dst((cp&0x3F)|0x80);
-            }
         }
         if (Array.isArray(dst['_cs']))
-            return String.fromCharCode.apply(String, dst['_cs']);
+            return stringFromCharCode.apply(String, dst['_cs']);
     };
 
     /**
@@ -268,14 +271,11 @@
             if (c1 === null) break;
             if (c1 >= 0xD800 && c1 <= 0xDFFF) {
                 c2 = src();
-                // console.log("surrogate "+c1.toString(16)+" with "+c2.toString(16));
                 if (c2 !== null && c2 >= 0xDC00 && c2 <= 0xDFFF) {
-                    // console.log("both out");
                     dst((c1-0xD800)*0x400+c2-0xDC00+0x10000);
                     c2 = null; continue;
                 }
             }
-            // console.log("one out");
             dst(c1);
         }
         if (c2 !== null) dst(c2);
@@ -308,16 +308,15 @@
         while ((cp = src()) !== null) {
             if (cp < 0 || cp > 0x10FFFF)
                 throw RangeError("Illegal code point: "+cp);
-            if (cp <= 0xFFFF) {
+            if (cp <= 0xFFFF)
                 dst(cp);
-            } else {
-                cp -= 0x10000;
-                dst((cp>>10)+0xD800);
+            else
+                cp -= 0x10000,
+                dst((cp>>10)+0xD800),
                 dst((cp%0x400)+0xDC00);
-            }
         }
         if (Array.isArray(dst['_cs']))
-            return String.fromCharCode.apply(String, dst['_cs']);
+            return stringFromCharCode.apply(String, dst['_cs']);
     };
     
     if (typeof module === 'object' && module && module['exports']) {
