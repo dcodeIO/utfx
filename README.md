@@ -116,6 +116,35 @@ Installs utfx as a polyfill for `String.fromCodePoint` and `String#codePointAt` 
 |-----------------|-----------------|---------------
 | override        | *boolean*       | Overrides an existing implementation if `true`, defaults to `false` 
 
+Usage
+-----
+* **node.js**:  `npm install utfx`
+   
+   ```js
+   var utfx = require("utfx");
+   ...
+   ```
+
+* **Browser**: `<script src="/path/to/utfx.min.js"></script>`
+   
+   ```js
+   var utfx = dcodeIO.utfx;
+   ...
+   ```
+   
+* **Require.js/AMD**   
+   
+   ```js
+   require.config({
+       "paths": {
+           "utfx": "/path/to/utfx.min.js"
+       }
+   });
+   require(["utfx"], function(utfx) {
+     ...
+   }
+   ```
+
 Downloads
 ---------
 * [Distributions](https://github.com/dcodeIO/utfx/tree/master/dist)

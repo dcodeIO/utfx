@@ -321,7 +321,7 @@
 
     /**
      * A polyfill for String.fromCodePoint.
-     * @param {...[number]} var_args Code points
+     * @param {...number} var_args Code points
      * @returns {string} Standard JavaScript string
      * @expose
      */
