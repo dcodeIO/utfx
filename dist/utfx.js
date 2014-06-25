@@ -43,7 +43,7 @@
      */
     function arraySource(arr) {
         var i=0; return function() {
-        	return i >= arr.length ? null : arr[i++];
+            return i >= arr.length ? null : arr[i++];
         };
     }
 
@@ -103,7 +103,7 @@
         Error.call(this);
         this.name = "TruncatedError";
         this.message = b.join(', ');
-        
+
         /**
          * Remaining bytes.
          * @type {!Array.<number>}
@@ -111,7 +111,7 @@
          */
         this.bytes = b;
     };
-    
+
     // Extends Error
     utfx.TruncatedError.prototype = new Error();
 
@@ -153,7 +153,7 @@
                 dst(((cp>>12)&0x0F)|0xE0),
                 dst(((cp>> 6)&0x3F)|0x80),
                 dst((cp&0x3F)|0x80);
-            else 
+            else
                 dst(((cp>>18)&0x07)|0xF0),
                 dst(((cp>>12)&0x3F)|0x80),
                 dst(((cp>> 6)&0x3F)|0x80),
@@ -406,7 +406,7 @@
     };
 
     /**
-     * A polyfill for String.fromCodePoint.
+     * A polyfill for `String.fromCodePoint`.
      * @param {...number} var_args Code points
      * @returns {string} Standard JavaScript string
      * @throws {TypeError} If arguments are invalid or a code point is invalid
@@ -418,7 +418,7 @@
     };
 
     /**
-     * A polyfill for String.prototype.codePointAt.
+     * A polyfill for `String#codePointAt`.
      * @param {string} s Standard JavaScript string
      * @param {number} i Index
      * @returns {number|undefined} Code point or `undefined` if `i` is out of range
@@ -426,7 +426,7 @@
      * @expose
      */
     utfx.codePointAt = function(s, i) {
-        if (typeof s !== 'string' || typeof i !== 'number')
+        if ((typeof s !== 'string' && !(s && s instanceof String)) || typeof i !== 'number')
             throw TypeError("Illegal arguments: "+(typeof s)+", "+(typeof i));
         var k, cp;
         if (i < 0 || i >= (k=s.length))
@@ -452,7 +452,7 @@
             String.prototype['codePointAt'] = function(i) { return utfx.codePointAt(this, i); };
         return utfx;
     };
-    
+
     if (typeof module === 'object' && module && module['exports']) {
         module['exports'] = utfx;
     } else if (typeof define === 'function' && define['amd']) {
@@ -461,5 +461,5 @@
         if (!global['dcodeIO']) global['dcodeIO'] = {};
         global['dcodeIO']['utfx'] = utfx;
     }
-    
+
 })(this, String);

@@ -1,4 +1,4 @@
-var utfx = require(__dirname+"/../index.js");
+var utfx = require(__dirname+"/../dist/utfx.min.js");
 
 // Test string as standard string, char codes, code points, bytes and binary string
 var string = "ä☺𠜎️☁️",
