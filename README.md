@@ -3,8 +3,8 @@
 **utfx** is a compact library to encode, decode and convert UTF8 / UTF16 in JavaScript using arbitrary sources and
 destinations through the use of successively called functions, basically eliminating [memory overhead](https://github.com/dcodeIO/utfx/wiki#faq).
 
-It is also capable of using binary strings and arrays (with overhead) and provides polyfills for `String.fromCodePoint`
-and `String#codePointAt`.
+The standalone library is also capable of using binary strings and arrays (with the usual overhead) and provides
+polyfills for `String.fromCodePoint` and `String#codePointAt`.
 
 API
 ---
