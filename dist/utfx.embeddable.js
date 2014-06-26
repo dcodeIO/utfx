@@ -12,10 +12,11 @@
 var utfx = {};
 
 /**
+ * String.fromCharCode reference for compile time renaming.
  * @type {function(...[number]):string}
  * @inner
  */
-var stringFromCharCode = String.fromCharCode;
+var stringFromCharCode = String.fromCharCode; // Usually shortened at compile time [...]
 
 /**
  * Converts an array to a source function.
@@ -327,7 +328,7 @@ utfx.decodeUTF8toUTF16 = function(src, dst) {
  * @throws {RangeError} If the code point is out of range
  * @inner
  */
-function calculateCodePoint(cp) {
+function calculateCodePoint(cp) { // Usually shortened at compile time
     if (cp < 0 || cp > 0x10FFFF)
         throw RangeError("Illegal code point: "+cp);
     return (cp < 0x80) ? 1 : (cp < 0x800) ? 2 : (cp < 0x10000) ? 3 : 4;
@@ -335,13 +336,16 @@ function calculateCodePoint(cp) {
 
 /**
  * Calculates the number of UTF8 bytes required to store an arbitrary input source of UTF8 code points.
- * @param {(function():number|null) | Array.<number>} src Code points source, either as a function returning the
- *  next code point respectively `null` if there are no more code points left or an array of code points.
+ * @param {(function():number|null) | Array.<number> | number} src Code points source, either as a function returning
+ *  the next code point respectively `null` if there are no more code points left, an array of code points or a single
+ *  numeric code point.
  * @returns {number} Number of UTF8 bytes required
  * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If a code point is out of range
  */
 utfx.calculateUTF8 = function(src) {
+    if (typeof src === 'number')
+        return calculateCodePoint(src);
     if (Array.isArray(src))
         src = arraySource(src);
     if (typeof src !== 'function')

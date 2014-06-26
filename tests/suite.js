@@ -1,4 +1,5 @@
-var utfx = require(__dirname+"/../dist/utfx.min.js");
+var utfx = require(__dirname+"/../dist/utfx.min.js"),
+    test = require("testjs");
 
 // Test string as standard string, char codes, code points, bytes and binary string
 var string = "ä☺𠜎️☁️",
@@ -12,7 +13,7 @@ var string = "ä☺𠜎️☁️",
     ],
     binarystring = String.fromCharCode.apply(String, bytes);
 
-module.exports = {
+var suite = {
 
     encodeUTF8: function(test) {
         // Array source and destination (implicitly tests function)
@@ -122,3 +123,6 @@ module.exports = {
         test.done();
     }
 };
+
+test.run(suite);
+module.exports = suite;

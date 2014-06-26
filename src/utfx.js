@@ -22,6 +22,12 @@
  */
 (function(global, String) {
     "use strict";
+
+    if (!Array.isArray) {
+        Array.isArray = function (v) {
+            return Object.prototype.toString.call(v) === "[object Array]";
+        };
+    }
     
     //? include("lib.js");
 

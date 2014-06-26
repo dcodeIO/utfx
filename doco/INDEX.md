@@ -9,7 +9,6 @@ utfx namespace.
 ### Class [TruncatedError](TruncatedError.md)
 
 An error indicating a truncated source. Contains the remaining bytes as an array in its `bytes` property.
-
 ### encodeUTF8(src, dst)
 
 Encodes UTF8 code points to an arbitrary output destination of UTF8 bytes.
@@ -90,10 +89,10 @@ Calculates the number of UTF8 bytes required to store an arbitrary input source 
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
-| src             | *function():(number &#124; null) &#124; Array.&lt;number&gt;* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left or an array of code points. 
+| src             | *function():(number &#124; null) &#124; Array.&lt;number&gt; &#124; number* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left, an array of code points or a single numeric code point. 
 | **@returns**    | *number*        | Number of UTF8 bytes required 
 | **@throws**     | *TypeError*     | If arguments are invalid 
-| **@throws**     | *RangeError*    | If a code point is invalid in UTF8 
+| **@throws**     | *RangeError*    | If a code point is out of range 
 
 ### calculateUTF16asUTF8(src)
 
@@ -105,11 +104,11 @@ converted to UTF8 code points.
 | src             | *function():(number &#124; null) &#124; !Array.&lt;number&gt; &#124; string* | Characters source, either as a function returning the next char code respectively `null` if there are no more characters left, an array of char codes or a standard JavaScript string. 
 | **@returns**    | *number*        | Number of UTF8 bytes required 
 | **@throws**     | *TypeError*     | If arguments are invalid 
-| **@throws**     | *RangeError*    | If an intermediate code point is invalid in UTF8 
+| **@throws**     | *RangeError*    | If an intermediate code point is out of range 
 
 ### fromCodePoint(var_args)
 
-A polyfill for String.fromCodePoint.
+A polyfill for `String.fromCodePoint`.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
@@ -120,7 +119,7 @@ A polyfill for String.fromCodePoint.
 
 ### codePointAt(s, i)
 
-A polyfill for String.prototype.codePointAt.
+A polyfill for `String#codePointAt`.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
