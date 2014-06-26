@@ -368,7 +368,7 @@
 
     /**
      * Calculates the number of UTF8 bytes required to store an arbitrary input source of UTF8 code points.
-     * @param {(function():number|null) | Array.<number> | number} src Code points source, either as a function returning
+     * @param {(function():number|null) | !Array.<number> | number} src Code points source, either as a function returning
      *  the next code point respectively `null` if there are no more code points left, an array of code points or a single
      *  numeric code point.
      * @returns {number} Number of UTF8 bytes required
