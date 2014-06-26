@@ -11,9 +11,6 @@ While there are already tons of UTF8 libraries around, most of them are based on
 strings) that may not be appropriate in specific use cases. To work around this, utfx provides the developer with the
 freedom to implement the low level operations (obtaining and outputting data) on their own.
 
-**PLEASE NOTE:** Though utfx is the outsourced UTF8 component of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js),
-it is still in its early stages and hasn't been heavily tested yet.
-
 API
 ---
 
