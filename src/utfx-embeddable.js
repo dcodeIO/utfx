@@ -20,10 +20,10 @@
  * Released under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/utfx for details
  */
-var utfx = (function(String) {
+var utfx = (function() {
     "use strict";
     
     //? include("lib.js");
     
     return utfx;
-})(String);
+})();

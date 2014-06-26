@@ -19,7 +19,7 @@
  * Released under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/utfx for details
  */
-var utfx = (function(String) {
+var utfx = (function() {
     "use strict";
 
     /**
@@ -332,4 +332,4 @@ var utfx = (function(String) {
     };
 
     return utfx;
-})(String);
+})();
