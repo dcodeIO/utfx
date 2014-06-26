@@ -1,13 +1,15 @@
 ![utfx - A compact library to process, convert, encode and decode UTF8 / UTF16 in JavaScript.](https://raw.github.com/dcodeIO/utfx/master/utfx.png)
 ====
 **utfx** is a compact library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using arbitrary sources
-and destinations through the use of callbacks. Includes polyfills for `String.fromCodePoint` and `String#codePointAt`.
+and destinations through the use of callbacks.
+
+As a side product it also provides polyfills for `String.fromCodePoint` and `String#codePointAt`.
 
 ### Background
 
-While there are already tons of UTF8 libraries around, most (if not all) of them are based on a specific data scheme
-(e.g. binary strings) that may not be appropriate in specific use cases. To work around that, utfx provides the developer
-with the freedom to implement the low level operations (obtaining and outputting data) on their own.
+While there are already tons of UTF8 libraries around, most of them are based on a specific data scheme (e.g. binary
+strings) that may not be appropriate in specific use cases. To work around this, utfx provides the developer with the
+freedom to implement the low level operations (obtaining and outputting data) on their own.
 
 **PLEASE NOTE:** Though utfx is the outsourced UTF8 component of [ByteBuffer.js](https://github.com/dcodeIO/ByteBuffer.js),
 it is still in its early stages and hasn't been heavily tested yet.

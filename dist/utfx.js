@@ -151,12 +151,12 @@
                 dst((cp&0x3F)|0x80);
             else if (cp < 0x10000)
                 dst(((cp>>12)&0x0F)|0xE0),
-                dst(((cp>> 6)&0x3F)|0x80),
+                dst(((cp>>6)&0x3F)|0x80),
                 dst((cp&0x3F)|0x80);
             else
                 dst(((cp>>18)&0x07)|0xF0),
                 dst(((cp>>12)&0x3F)|0x80),
-                dst(((cp>> 6)&0x3F)|0x80),
+                dst(((cp>>6)&0x3F)|0x80),
                 dst((cp&0x3F)|0x80);
             cp = null;
         }
@@ -193,19 +193,13 @@
                 dst(a);
             else if ((a&0xE0) === 0xC0)
                 ((b = src()) === null) && t([a, b]),
-                    dst(((a&0x1F)<<6)
-                        |  (b&0x3F));
+                dst(((a&0x1F)<<6) | (b&0x3F));
             else if ((a&0xF0) === 0xE0)
                 ((b=src()) === null || (c=src()) === null) && t([a, b, c]),
-                    dst(((a&0x0F)<<12)
-                        | ((b&0x3F)<<6)
-                        |  (c&0x3F));
+                dst(((a&0x0F)<<12) | ((b&0x3F)<<6) | (c&0x3F));
             else if ((a&0xF8) === 0xF0)
                 ((b=src()) === null || (c=src()) === null || (d=src()) === null) && t([a, b, c ,d]),
-                    dst(((a&0x07)<<18)
-                        | ((b&0x3F)<<12)
-                        | ((c&0x3F)<<6)
-                        |  (d&0x3F));
+                dst(((a&0x07)<<18) | ((b&0x3F)<<12) | ((c&0x3F)<<6) | (d&0x3F));
             else throw RangeError("Illegal starting byte: "+a);
         }
     };
@@ -237,14 +231,11 @@
                 throw RangeError("Illegal char code: "+c1);
         };
         while (true) {
-            c1 = c2 !== null ? c2 : src();
-            if (c1 === null) break;
-            t(c1);
-            if (c1 >= 0xD800 && c1 <= 0xDFFF) {
-                c2 = src();
-                if (c2 !== null) {
-                    t(c2);
-                    if (c2 >= 0xDC00 && c2 <= 0xDFFF) {
+            if ((c1 = c2 !== null ? c2 : src()) === null)
+                break;
+            t(c1); if (c1 >= 0xD800 && c1 <= 0xDFFF) {
+                if ((c2 = src()) !== null) {
+                    t(c2); if (c2 >= 0xDC00 && c2 <= 0xDFFF) {
                         dst((c1-0xD800)*0x400+c2-0xDC00+0x10000);
                         c2 = null; continue;
                     }
@@ -356,6 +347,19 @@
     };
 
     /**
+     * Calculates the byte length of an UTF8 code point.
+     * @param {number} cp UTF8 code point
+     * @returns {number}
+     * @throws {RangeError} If the code point is out of range
+     * @inner
+     */
+    function calculateCodePoint(cp) {
+        if (cp < 0 || cp > 0x10FFFF)
+            throw RangeError("Illegal code point: "+cp);
+        return (cp < 0x80) ? 1 : (cp < 0x800) ? 2 : (cp < 0x10000) ? 3 : 4;
+    }
+
+    /**
      * Calculates the number of UTF8 bytes required to store an arbitrary input source of UTF8 code points.
      * @param {(function():number|null) | Array.<number>} src Code points source, either as a function returning the
      *  next code point respectively `null` if there are no more code points left or an array of code points.
@@ -370,14 +374,8 @@
         if (typeof src !== 'function')
             throw TypeError("Illegal arguments: "+(typeof arguments[0]));
         var cp, n=0;
-        while ((cp = src()) !== null) {
-            if (cp < 0 || cp > 0x10FFFF)
-                throw RangeError("Illegal code point: "+cp);
-            if (cp < 0x80) ++n;
-            else if (cp < 0x800) n+=2;
-            else if (cp < 0x10000) n+=3;
-            else n+=4;
-        }
+        while ((cp = src()) !== null)
+            n += calculateCodePoint(cp);
         return n;
     };
 
@@ -395,12 +393,7 @@
     utfx.calculateUTF16asUTF8 = function(src) {
         var n=0;
         utfx.UTF16toUTF8(src, function(cp) {
-            if (cp < 0 || cp > 0x10FFFF)
-                throw RangeError("Illegal code point: "+cp);
-            if (cp < 0x80) ++n;
-            else if (cp < 0x800) n+=2;
-            else if (cp < 0x10000) n+=3;
-            else n+=4;
+            n += calculateCodePoint(cp);
         });
         return n;
     };
