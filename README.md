@@ -8,8 +8,9 @@ As a side product it also provides polyfills for `String.fromCodePoint` and `Str
 ### Background
 
 While there are already tons of UTF8 libraries around, most of them are based on a specific data scheme (e.g. binary
-strings) that may not be appropriate in specific use cases. To work around this, utfx provides the developer with the
-freedom to implement the low level operations (obtaining and outputting data) on their own.
+strings) that may [not be appropriate in specific use cases](https://github.com/dcodeIO/utfx/wiki#faq). To work around
+this, utfx provides the developer with the freedom to implement the low level operations (obtaining and outputting data)
+on their own.
 
 API
 ---
@@ -179,8 +180,8 @@ Downloads
 ---------
 * [Distributions](https://github.com/dcodeIO/utfx/tree/master/dist)
 
-Examples
---------
+FAQ and examples
+----------------
 * [Wiki](https://github.com/dcodeIO/utfx/wiki)
 
 License

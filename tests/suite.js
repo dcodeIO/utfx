@@ -17,8 +17,7 @@ var suite = {
 
     encodeUTF8: function(test) {
         // Array source and destination (implicitly tests function)
-        var out = [];
-        utfx.encodeUTF8(codepoints, out);
+        var out = []; utfx.encodeUTF8(codepoints, out);
         test.deepEqual(out, bytes);
         // Binary string destination
         test.strictEqual(utfx.encodeUTF8(codepoints), binarystring);
@@ -27,15 +26,13 @@ var suite = {
 
     decodeUTF8: function(test) {
         // Array source and destination (implicitly tests function)
-        var out = [];
-        utfx.decodeUTF8(bytes, out);
+        var out = []; utfx.decodeUTF8(bytes, out);
         test.deepEqual(out, codepoints);
         // Binary string source
-        out = [];
-        utfx.decodeUTF8(binarystring, out);
+        out = []; utfx.decodeUTF8(binarystring, out);
         test.deepEqual(out, codepoints);
         // Truncated
-        out = []
+        out = [];
         var thrown = false;
         try {
             utfx.decodeUTF8(bytes.slice(0, bytes.length-4), out);
@@ -50,8 +47,7 @@ var suite = {
 
     UTF16toUTF8: function(test) {
         // Array source and destination (implicitly tests function)
-        var out = [];
-        utfx.UTF16toUTF8(charcodes, out);
+        var out = []; utfx.UTF16toUTF8(charcodes, out);
         test.deepEqual(out, codepoints);
         // String source
         out = [];
@@ -62,8 +58,7 @@ var suite = {
 
     UTF8toUTF16: function(test) {
         // Array source and destination (implicitly tests function)
-        var out = [];
-        utfx.UTF8toUTF16(codepoints, out);
+        var out = []; utfx.UTF8toUTF16(codepoints, out);
         test.deepEqual(out, charcodes);
         // String destination (omitted dst, returns)
         test.strictEqual(utfx.UTF8toUTF16(codepoints), string);
@@ -72,8 +67,7 @@ var suite = {
 
     encodeUTF16toUTF8: function(test) {
         // Array source and destination (implicitly tests function)
-        var out = [];
-        utfx.encodeUTF16toUTF8(charcodes, out);
+        var out = []; utfx.encodeUTF16toUTF8(charcodes, out);
         test.deepEqual(out, bytes);
         // String source and destination
         test.strictEqual(utfx.encodeUTF16toUTF8(string), binarystring);
@@ -81,9 +75,8 @@ var suite = {
     },
     
     decodeUTF8toUTF16: function(test) {
-        // array source and destination (implicitly tests function)
-        var out = [];
-        utfx.decodeUTF8toUTF16(bytes, out);
+        // Array source and destination (implicitly tests function)
+        var out = []; utfx.decodeUTF8toUTF16(bytes, out);
         test.deepEqual(out, charcodes);
         // String destination
         test.strictEqual(utfx.decodeUTF8toUTF16(bytes), string);
