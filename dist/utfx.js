@@ -81,7 +81,7 @@
     }
 
     /**
-     * A null source.
+     * A source function always returning `null`.
      * @returns {null}
      * @inner
      */
@@ -365,7 +365,7 @@
      *  next code point respectively `null` if there are no more code points left or an array of code points.
      * @returns {number} Number of UTF8 bytes required
      * @throws {TypeError} If arguments are invalid
-     * @throws {RangeError} If a code point is invalid in UTF8
+     * @throws {RangeError} If a code point is out of range
      * @expose
      */
     utfx.calculateUTF8 = function(src) {
@@ -387,7 +387,7 @@
      *  a standard JavaScript string.
      * @returns {number} Number of UTF8 bytes required
      * @throws {TypeError} If arguments are invalid
-     * @throws {RangeError} If an intermediate code point is invalid in UTF8
+     * @throws {RangeError} If an intermediate code point is out of range
      * @expose
      */
     utfx.calculateUTF16asUTF8 = function(src) {

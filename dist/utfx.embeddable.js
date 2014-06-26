@@ -1,17 +1,11 @@
-//? if (typeof UTFX_STANDALONE === 'undefined') UTFX_STANDALONE = false;
-//? if (!UTFX_STANDALONE) {
 /**
  * @license utfx (c) 2014 Daniel Wirtz <dcode@dcode.io>
  * Released under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/utfx for details
  */
 
-//? }
 /**
  * utfx namespace.
-//? if (UTFX_STANDALONE)
- * @exports utfx
-//? else
  * @inner
  * @type {!Object.<string,*>}
  */
@@ -83,8 +77,6 @@ function nullSource() {
  * @param {!Array.<number>} b Remaining bytes
  * @extends Error
  * @constructor
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.TruncatedError = function(b) {
     if (!(this instanceof utfx.TruncatedError))
@@ -92,12 +84,10 @@ utfx.TruncatedError = function(b) {
     Error.call(this);
     this.name = "TruncatedError";
     this.message = b.join(', ');
-    
+
     /**
      * Remaining bytes.
      * @type {!Array.<number>}
-     //? if (UTFX_STANDALONE)
-     * @expose
      */
     this.bytes = b;
 };
@@ -116,8 +106,6 @@ utfx.TruncatedError.prototype = new Error();
  * @returns {undefined|string} A binary string if `dst` has been omitted, otherwise `undefined`
  * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If a code point is invalid in UTF8
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.encodeUTF8 = function(src, dst) {
     var cp = null;
@@ -144,7 +132,7 @@ utfx.encodeUTF8 = function(src, dst) {
             dst(((cp>>12)&0x0F)|0xE0),
             dst(((cp>>6)&0x3F)|0x80),
             dst((cp&0x3F)|0x80);
-        else 
+        else
             dst(((cp>>18)&0x07)|0xF0),
             dst(((cp>>12)&0x3F)|0x80),
             dst(((cp>>6)&0x3F)|0x80),
@@ -165,8 +153,6 @@ utfx.encodeUTF8 = function(src, dst) {
  * @throws {RangeError} If a starting byte is invalid in UTF8
  * @throws {utfx.TruncatedError} If the last sequence is truncated. Has an array property `bytes` holding the
  *  remaining bytes.
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.decodeUTF8 = function(src, dst) {
     if (typeof src === 'string')
@@ -205,8 +191,6 @@ utfx.decodeUTF8 = function(src, dst) {
  *  with each converted code point or an array to be filled with the converted code points.
  * @throws {TypeError} If arguments are invalid or a char code is invalid
  * @throws {RangeError} If a char code is out of range
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.UTF16toUTF8 = function(src, dst) {
     if (typeof src === 'string')
@@ -250,8 +234,6 @@ utfx.UTF16toUTF8 = function(src, dst) {
  * @returns {undefined|string} A standard JavaScript string if `dst` has been omitted, otherwise `undefined`
  * @throws {TypeError} If arguments are invalid or a code point is invalid
  * @throws {RangeError} If a code point is out of range
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.UTF8toUTF16 = function(src, dst) {
     var cp = null;
@@ -295,8 +277,6 @@ utfx.UTF8toUTF16 = function(src, dst) {
  * @returns {undefined|string} A binary string if `dst` has been omitted, otherwise `undefined`
  * @throws {TypeError} If arguments are invalid or a char code is invalid
  * @throws {RangeError} If a char code is out of range
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.encodeUTF16toUTF8 = function(src, dst) {
     if (typeof dst === 'undefined')
@@ -325,8 +305,6 @@ utfx.encodeUTF16toUTF8 = function(src, dst) {
  * @throws {RangeError} If a starting byte is invalid in UTF8
  * @throws {utfx.TruncatedError} If the last sequence is truncated. Has an array property `bytes` holding the
  *  remaining bytes.
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.decodeUTF8toUTF16 = function(src, dst) {
     if (typeof dst === 'undefined')
@@ -362,8 +340,6 @@ function calculateCodePoint(cp) {
  * @returns {number} Number of UTF8 bytes required
  * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If a code point is out of range
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.calculateUTF8 = function(src) {
     if (Array.isArray(src))
@@ -385,8 +361,6 @@ utfx.calculateUTF8 = function(src) {
  * @returns {number} Number of UTF8 bytes required
  * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If an intermediate code point is out of range
- //? if (UTFX_STANDALONE)
- * @expose
  */
 utfx.calculateUTF16asUTF8 = function(src) {
     var n=0;
