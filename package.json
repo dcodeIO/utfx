@@ -1,8 +1,8 @@
 {
     "name": "utfx",
     "author": "Daniel Wirtz <dcode@dcode.io>",
-    "version": "0.8.0",
-    "description": "A compact library to process, convert, encode and decode UTF8 / UTF16 in JavaScript using arbitrary sources and destinations through the use of callbacks.",
+    "version": "0.8.1",
+    "description": "A compact library to encode, decode and convert UTF8 / UTF16 in JavaScript.",
     "main": "index.js",
     "repository": {
         "type": "git",
