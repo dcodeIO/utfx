@@ -1,4 +1,5 @@
-utfx sources
-------------
+Sources
+-------
 * **utfx.js** is the wrapper for the standalone library.
-* **lib.js** is just the core functionality required when embedded into other libraries.
+* **utfx-embeddable.js** is the wrapper for the embeddable library.
+* **lib.js** is just the core functionality.

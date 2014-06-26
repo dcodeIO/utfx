@@ -28,24 +28,94 @@
             return Object.prototype.toString.call(v) === "[object Array]";
         };
     }
-    
+
     //? include("lib.js");
+
+    /**
+     * Creates a source function for an array.
+     * @param {!Array.<number>} a Array to read from
+     * @param {boolean=} noAssert Set to `true` to skip argument assertions, defaults to `false`
+     * @returns {function():number|null} Source function returning the next value respectively `null` if there are no
+     *  more values left.
+     * @throws {TypeError} If the argument is invalid
+     //? if (UTFX_STANDALONE)
+     * @expose
+     */
+    utfx.arraySource = function(a, noAssert) {
+        if (!noAssert && !Array.isArray(a))
+            throw TypeError("Illegal argument: "+(typeof a));
+        var i=0; return function() {
+            return i >= a.length ? null : a[i++];
+        };
+    };
+
+    /**
+     * Creates a destination function for an array.
+     * @param {!Array.<number>} a Array to write to
+     * @param {boolean=} noAssert Set to `true` to skip argument assertions, defaults to `false`
+     * @returns {function(number)} Destination function successively called with the next value.
+     * @throws {TypeError} If the argument is invalid
+     //? if (UTFX_STANDALONE)
+     * @expose
+     */
+    utfx.arrayDestination = function(a, noAssert) {
+        if (!noAssert && !Array.isArray(a))
+            throw TypeError("Illegal argument: "+(typeof a));
+        return Array.prototype.push.bind(a);
+    };
+
+    /**
+     * Creates a source function for a string.
+     * @param {string} s String to read from
+     * @param {boolean=} noAssert Set to `true` to skip argument assertions, defaults to `false`
+     * @returns {function():number|null} Source function returning the next char code respectively `null` if there are
+     *  no more characters left.
+     * @throws {TypeError} If the argument is invalid
+     //? if (UTFX_STANDALONE)
+     * @expose
+     */
+    utfx.stringSource = function(s, noAssert) {
+        if (!noAssert && typeof s !== 'string')
+            throw TypeError("Illegal argument: "+(typeof s));
+        var i=0; return function() {
+            return i >= s.length ? null : s.charCodeAt(i++);
+        };
+    };
+
+    /**
+     * Creates a destination function for a string.
+     * @returns {function(number=):undefined|string} Destination function successively called with the next char code.
+     *  Returns the final string when called without arguments.
+     //? if (UTFX_STANDALONE)
+     * @expose
+     */
+    utfx.stringDestination = function() {
+        var cs = [], ps = []; return function() {
+            if (arguments.length === 0)
+                return ps.join('')+stringFromCharCode.apply(String, cs);
+            if (cs.length + arguments.length > 1024)
+                ps.push(stringFromCharCode.apply(String, cs)),
+                    cs.length = 0;
+            Array.prototype.push.apply(cs, arguments);
+        };
+    };
 
     /**
      * A polyfill for `String.fromCodePoint`.
      * @param {...number} var_args Code points
-     * @returns {string} Standard JavaScript string
+     * @returns {string} JavaScript string
      * @throws {TypeError} If arguments are invalid or a code point is invalid
      * @throws {RangeError} If a code point is out of range
      * @expose
      */
     utfx.fromCodePoint = function(var_args) {
-        return utfx.UTF8toUTF16(Array.prototype.slice.apply(arguments));
+        var sd; utfx.UTF8toUTF16(utfx.arraySource(Array.prototype.slice.apply(arguments)), sd = utfx.stringDestination());
+        return sd();
     };
 
     /**
      * A polyfill for `String#codePointAt`.
-     * @param {string} s Standard JavaScript string
+     * @param {string} s JavaScript string
      * @param {number} i Index
      * @returns {number|undefined} Code point or `undefined` if `i` is out of range
      * @throws {TypeError} If arguments are invalid
