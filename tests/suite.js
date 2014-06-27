@@ -59,8 +59,10 @@ var suite = {
             );
         } catch (e) {
             thrown = true;
-            test.ok(e instanceof utfx.TruncatedError);
-            test.deepEqual(e.bytes, bytes.slice(bytes.length-6, bytes.length-4));
+            test.strictEqual(e.name, "TruncatedError");
+            var b = bytes.slice(bytes.length-6, bytes.length-4);
+            test.strictEqual(e.message, b.toString());
+            test.deepEqual(e.bytes, b);
         }
         test.ok(thrown);
         test.done();

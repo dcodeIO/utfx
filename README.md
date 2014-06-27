@@ -9,141 +9,161 @@ polyfills for `String.fromCodePoint` and `String#codePointAt`.
 API
 ---
 
-### Class TruncatedError : Error
+### encodeUTF8(src, dst)
 
-An error indicating a truncated source. Contains the remaining bytes as an array in its `bytes` property.
-
-### encodeUTF8(src, dst, noAssert=)
-
-Encodes UTF8 code points to an arbitrary output destination of UTF8 bytes.
+Encodes UTF8 code points to UTF8 bytes.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null) &#124; number* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left or a single numeric code point. 
 | dst             | *function(number)* | Bytes destination as a function successively called with the next byte 
-| noAssert        | *boolean*       | Set to `true` to skip argument and range assertions, defaults to `false` 
 | **@throws**     | *TypeError*     | If arguments are invalid 
-| **@throws**     | *RangeError*    | If a code point is invalid in UTF8 
 
-### decodeUTF8(src, dst, noAssert=)
+### decodeUTF8(src, dst)
 
-Decodes an arbitrary input source of UTF8 bytes to UTF8 code points.
+Decodes UTF8 bytes to UTF8 code points.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Bytes source as a function returning the next byte respectively `null` if there are no more bytes left. 
 | dst             | *function(number)* | Code points destination as a function successively called with each decoded code point. 
-| noAssert        | *boolean*       | Set to `true` to skip argument assertions, defaults to `false` 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a starting byte is invalid in UTF8 
-| **@throws**     | *utfx.TruncatedError* | If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes. 
+| **@throws**     | *Error*         | If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes. 
 
-### UTF16toUTF8(src, dst, noAssert=)
+### UTF16toUTF8(src, dst)
 
-Converts an arbitrary input source of UTF16 characters to an arbitrary output destination of UTF8 code points.
+Converts UTF16 characters to UTF8 code points.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Characters source as a function returning the next char code respectively `null` if there are no more characters left. 
 | dst             | *function(number)* | Code points destination as a function successively called with each converted code point. 
-| noAssert        | *boolean*       | Set to `true` to skip argument and range assertions, defaults to `false` 
-| **@throws**     | *TypeError*     | If arguments are invalid or a char code is invalid 
-| **@throws**     | *RangeError*    | If a char code is out of range 
+| **@throws**     | *TypeError*     | If arguments are invalid 
 
-### UTF8toUTF16(src, dst, noAssert=)
+### UTF8toUTF16(src, dst)
 
-Converts an arbitrary input source of UTF8 code points to an arbitrary output destination of UTF16 characters.
+Converts UTF8 code points to UTF16 characters.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null) &#124; number* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left or a single numeric code point. 
 | dst             | *function(number)* | Characters destination as a function successively called with each converted char code. 
-| noAssert        | *boolean*       | Set to `true` to skip argument and range assertions, defaults to `false` 
 | **@throws**     | *TypeError*     | If arguments are invalid or a code point is invalid 
 | **@throws**     | *RangeError*    | If a code point is out of range 
 
-### encodeUTF16toUTF8(src, dst, noAssert=)
+### encodeUTF16toUTF8(src, dst)
 
-Converts and encodes an arbitrary input source of UTF16 characters to an arbitrary output destination of UTF8
-bytes.
+Converts and encodes UTF16 characters to UTF8 bytes.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Characters source as a function returning the next char code respectively `null` if there are no more characters left. 
 | dst             | *function(number)* | Bytes destination as a function successively called with the next byte. 
-| noAssert        | *boolean*       | Set to `true` to skip argument and range assertions, defaults to `false` 
-| **@throws**     | *TypeError*     | If arguments are invalid or a char code is invalid 
-| **@throws**     | *RangeError*    | If a char code is out of range 
+| **@throws**     | *TypeError*     | If arguments are invalid 
 
-### decodeUTF8toUTF16(src, dst, noAssert=)
+### decodeUTF8toUTF16(src, dst)
 
-Decodes and converts an arbitrary input source of UTF8 bytes to an arbitrary output destination of UTF16
-characters.
+Decodes and converts UTF8 bytes to UTF16 characters.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Bytes source as a function returning the next byte respectively `null` if there are no more bytes left. 
 | dst             | *function(number)* | Characters destination as a function successively called with each converted char code. 
-| noAssert        | *boolean*       | Set to `true` to skip argument and range assertions, defaults to `false` 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a starting byte is invalid in UTF8 
-| **@throws**     | *utfx.TruncatedError* | If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes. 
+| **@throws**     | *Error*         | If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes. 
 
-### calculateUTF8(src, noAssert=)
+### assertByte(b)
 
-Calculates the number of UTF8 bytes required to store an arbitrary input source of UTF8 code points.
+Asserts a byte value.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
-| src             | *function():(number &#124; null) &#124; number* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left or a single numeric code point. 
-| noAssert        | *boolean*       | Set to `true` to skip argument assertions, defaults to `false` 
+| b               | *number*        | 8bit byte value 
+| **@returns**    | *number*        | Valid byte value 
+| **@throws**     | *TypeError*     | If the byte value is invalid 
+| **@throws**     | *RangeError*    | If the byte value is out of range 
+
+### assertCharCode(c)
+
+Asserts an UTF16 char code.
+
+| Parameter       | Type            | Description
+|-----------------|-----------------|---------------
+| c               | *number*        | UTF16 char code 
+| **@returns**    | *number*        | Valid char code 
+| **@throws**     | *TypeError*     | If the char code is invalid 
+| **@throws**     | *RangeError*    | If the char code is out of range 
+
+### assertCodePoint(cp)
+
+Asserts an UTF8 code point.
+
+| Parameter       | Type            | Description
+|-----------------|-----------------|---------------
+| cp              | *number*        | UTF8 code point 
+| **@returns**    | *number*        | Valid code point 
+| **@throws**     | *TypeError*     | If the code point is invalid 
+| **@throws**     | *RangeError*    | If the code point is out of range 
+
+### calculateCodePoint(cp)
+
+Calculates the byte length of an UTF8 code point.
+
+| Parameter       | Type            | Description
+|-----------------|-----------------|---------------
+| cp              | *number*        | UTF8 code point 
+| **@returns**    | *number*        | Byte length 
+
+### calculateUTF8(src)
+
+Calculates the number of UTF8 bytes required to store UTF8 code points.
+
+| Parameter       | Type            | Description
+|-----------------|-----------------|---------------
+| src             | *function():(number &#124; null)* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left. 
 | **@returns**    | *number*        | The number of UTF8 bytes required 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a code point is out of range 
 
-### calculateUTF16asUTF8(src, noAssert=)
+### calculateUTF16asUTF8(src)
 
-Calculates the number of UTF8 code points respectively UTF8 bytes required to store an arbitrary input source of
-UTF16 char codes.
+Calculates the number of UTF8 code points respectively UTF8 bytes required to store UTF16 char codes.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Characters source as a function returning the next char code respectively `null` if there are no more characters left. 
-| noAssert        | *boolean*       | Set to `true` to skip argument and range assertions, defaults to `false` 
 | **@returns**    | *!Array.&lt;number&gt;* | The number of UTF8 code points at index 0 and the number of UTF8 bytes required at index 1. 
 | **@throws**     | *TypeError*     | If arguments are invalid 
-| **@throws**     | *RangeError*    | If an intermediate code point is out of range 
 
-### arraySource(a, noAssert=)
+### arraySource(a)
 
 Creates a source function for an array.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | a               | *!Array.&lt;number&gt;* | Array to read from 
-| noAssert        | *boolean*       | Set to `true` to skip argument assertions, defaults to `false` 
 | **@returns**    | *function():(number &#124; null)* | Source function returning the next value respectively `null` if there are no more values left. 
 | **@throws**     | *TypeError*     | If the argument is invalid 
 
-### arrayDestination(a, noAssert=)
+### arrayDestination(a)
 
 Creates a destination function for an array.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | a               | *!Array.&lt;number&gt;* | Array to write to 
-| noAssert        | *boolean*       | Set to `true` to skip argument assertions, defaults to `false` 
 | **@returns**    | *function(number)* | Destination function successively called with the next value. 
 | **@throws**     | *TypeError*     | If the argument is invalid 
 
-### stringSource(s, noAssert=)
+### stringSource(s)
 
 Creates a source function for a string.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
 | s               | *string*        | String to read from 
-| noAssert        | *boolean*       | Set to `true` to skip argument assertions, defaults to `false` 
 | **@returns**    | *function():(number &#124; null)* | Source function returning the next char code respectively `null` if there are no more characters left. 
 | **@throws**     | *TypeError*     | If the argument is invalid 
 

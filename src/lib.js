@@ -14,7 +14,6 @@ var utfx = {};
  *  respectively `null` if there are no more code points left or a single numeric code point.
  * @param {function(number)} dst Bytes destination as a function successively called with the next byte
  * @throws {TypeError} If arguments are invalid
- * @throws {RangeError} If a code point is invalid in UTF8
  //? if (UTFX_STANDALONE)
  * @expose
  */
@@ -51,7 +50,7 @@ utfx.encodeUTF8 = function(src, dst) {
  * @param {function(number)} dst Code points destination as a function successively called with each decoded code point.
  * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If a starting byte is invalid in UTF8
- * @throws {utfx.TruncatedError} If the last sequence is truncated. Has an array property `bytes` holding the
+ * @throws {Error} If the last sequence is truncated. Has an array property `bytes` holding the
  *  remaining bytes.
  //? if (UTFX_STANDALONE)
  * @expose
@@ -60,7 +59,11 @@ utfx.decodeUTF8 = function(src, dst) {
     if (typeof src !== 'function' || typeof dst !== 'function')
         throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
     var a, b, c, d, fail = function(b) {
-        throw utfx.TruncatedError(b.slice(0, b.indexOf(null)));
+        b = b.slice(0, b.indexOf(null));
+        var err = Error(b.toString());
+        err.name = "TruncatedError";
+        err['bytes'] = b;
+        throw err;
     };
     while ((a = src()) !== null) {
         if ((a&0x80) === 0)
@@ -84,8 +87,7 @@ utfx.decodeUTF8 = function(src, dst) {
  *  `null` if there are no more characters left.
  * @param {function(number)} dst Code points destination as a function successively called with each converted code
  *  point.
- * @throws {TypeError} If arguments are invalid or a char code is invalid
- * @throws {RangeError} If a char code is out of range
+ * @throws {TypeError} If arguments are invalid
  //? if (UTFX_STANDALONE)
  * @expose
  */
@@ -142,8 +144,7 @@ utfx.UTF8toUTF16 = function(src, dst) {
  * @param {function():number|null} src Characters source as a function returning the next char code respectively `null`
  *  if there are no more characters left.
  * @param {function(number)} dst Bytes destination as a function successively called with the next byte.
- * @throws {TypeError} If arguments are invalid or a char code is invalid
- * @throws {RangeError} If a char code is out of range
+ * @throws {TypeError} If arguments are invalid
  //? if (UTFX_STANDALONE)
  * @expose
  */
@@ -162,8 +163,7 @@ utfx.encodeUTF16toUTF8 = function(src, dst) {
  * @param {function(number)} dst Characters destination as a function successively called with each converted char code.
  * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If a starting byte is invalid in UTF8
- * @throws {utfx.TruncatedError} If the last sequence is truncated. Has an array property `bytes` holding the
- *  remaining bytes.
+ * @throws {Error} If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes.
  //? if (UTFX_STANDALONE)
  * @expose
  */
@@ -258,7 +258,6 @@ utfx.calculateUTF8 = function(src) {
  *  `null` if there are no more characters left.
  * @returns {!Array.<number>} The number of UTF8 code points at index 0 and the number of UTF8 bytes required at index 1.
  * @throws {TypeError} If arguments are invalid
- * @throws {RangeError} If an intermediate code point is out of range
  //? if (UTFX_STANDALONE)
  * @expose
  */
@@ -270,30 +269,3 @@ utfx.calculateUTF16asUTF8 = function(src) {
     return [n,l];
 };
 
-/**
- * Constructs a new TruncatedError.
- * @class An error indicating a truncated source. Contains the remaining bytes as an array in its `bytes` property.
- * @param {!Array.<number>} b Remaining bytes
- * @extends Error
- * @constructor
- //? if (UTFX_STANDALONE)
- * @expose
- */
-utfx.TruncatedError = function(b) {
-    if (!(this instanceof utfx.TruncatedError))
-        return new utfx.TruncatedError(b);
-    Error.call(this);
-    this.name = "TruncatedError";
-    this.message = b.join(', ');
-
-    /**
-     * Remaining bytes.
-     * @type {!Array.<number>}
-     //? if (UTFX_STANDALONE)
-     * @expose
-     */
-    this.bytes = b;
-};
-
-// Extends Error
-utfx.TruncatedError.prototype = new Error();
