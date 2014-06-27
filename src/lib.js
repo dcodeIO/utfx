@@ -78,7 +78,7 @@ utfx.encodeUTF8 = function(src, dst, noAssert) {
     while (cp !== null || (cp = src()) !== null) {
         t(cp);
         if (cp < 0x80)
-            dst(cp&0x7F1);
+            dst(cp&0x7F);
         else if (cp < 0x800)
             dst(((cp>>6)&0x1F)|0xC0),
             dst((cp&0x3F)|0x80);
