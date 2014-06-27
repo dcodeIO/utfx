@@ -97,20 +97,20 @@ Calculates the number of UTF8 bytes required to store an arbitrary input source 
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null) &#124; number* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left or a single numeric code point. 
 | noAssert        | *boolean*       | Set to `true` to skip argument assertions, defaults to `false` 
-| **@returns**    | *number*        | Number of UTF8 bytes required 
+| **@returns**    | *number*        | The number of UTF8 bytes required 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a code point is out of range 
 
 ### calculateUTF16asUTF8(src, noAssert=)
 
-Calculates the number of UTF8 bytes required to store an arbitrary input source of UTF16 characters when
-converted to UTF8 code points.
+Calculates the number of UTF8 code points respectively UTF8 bytes required to store an arbitrary input source of
+UTF16 char codes.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
-| src             | *function():(number &#124; null) &#124; !Array.&lt;number&gt; &#124; string* | Characters source, either as a function returning the next char code respectively `null` if there are no more characters left, an array of char codes or a standard JavaScript string. 
+| src             | *function():(number &#124; null)* | Characters source as a function returning the next char code respectively `null` if there are no more characters left. 
 | noAssert        | *boolean*       | Set to `true` to skip argument and range assertions, defaults to `false` 
-| **@returns**    | *number*        | Number of UTF8 bytes required 
+| **@returns**    | *!Array.&lt;number&gt;* | The number of UTF8 code points at index 0 and the number of UTF8 bytes required at index 1. 
 | **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If an intermediate code point is out of range 
 

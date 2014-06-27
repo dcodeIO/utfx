@@ -143,12 +143,14 @@ var suite = {
         var n = utfx.calculateUTF16asUTF8(
             arraySource(charcodes)
         );
-        test.strictEqual(n, bytes.length);
+        test.strictEqual(n[0], codepoints.length);
+        test.strictEqual(n[1], bytes.length);
         // String source
         n = utfx.calculateUTF16asUTF8(
             stringSource(string)
         );
-        test.strictEqual(n, bytes.length);
+        test.strictEqual(n[0], codepoints.length);
+        test.strictEqual(n[1], bytes.length);
         test.done();
     },
 

@@ -29,6 +29,13 @@
         };
     }
 
+    /**
+     * String.fromCharCode reference for compile time renaming.
+     * @type {function(...[number]):string}
+     * @inner
+     */
+    var stringFromCharCode = String.fromCharCode;
+
     //? include("lib.js");
 
     /**

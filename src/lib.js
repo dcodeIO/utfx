@@ -9,13 +9,6 @@
 var utfx = {};
 
 /**
- * String.fromCharCode reference for compile time renaming.
- * @type {function(...[number]):string}
- * @inner
- */
-var stringFromCharCode = String.fromCharCode;
-
-/**
  * A source function always returning `null`.
  * @returns {null}
  * @inner
@@ -288,7 +281,7 @@ function validateCodePoint(cp) {
  * @param {(function():number|null) | number} src Code points source, either as a function returning the next code point
  *  respectively `null` if there are no more code points left or a single numeric code point.
  * @param {boolean=} noAssert Set to `true` to skip argument assertions, defaults to `false`
- * @returns {number} Number of UTF8 bytes required
+ * @returns {number} The number of UTF8 bytes required
  * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If a code point is out of range
  //? if (UTFX_STANDALONE)
@@ -303,29 +296,28 @@ utfx.calculateUTF8 = function(src, noAssert) {
             throw TypeError("Illegal arguments: "+(typeof arguments[0]));
         t = validateCodePoint;
     } else t = noop;
-    var cp, n=0;
+    var cp, l=0;
     while ((cp = src()) !== null)
-        t(cp), n += calculateCodePoint(cp);
-    return n;
+        t(cp), l += calculateCodePoint(cp);
+    return l;
 };
 
 /**
- * Calculates the number of UTF8 bytes required to store an arbitrary input source of UTF16 characters when
- *  converted to UTF8 code points.
- * @param {(function():number|null) | !Array.<number> | string} src Characters source, either as a function
- *  returning the next char code respectively `null` if there are no more characters left, an array of char codes or
- *  a standard JavaScript string.
+ * Calculates the number of UTF8 code points respectively UTF8 bytes required to store an arbitrary input source of
+ *  UTF16 char codes.
+ * @param {(function():number|null)} src Characters source as a function returning the next char code respectively
+ *  `null` if there are no more characters left.
  * @param {boolean=} noAssert Set to `true` to skip argument and range assertions, defaults to `false`
- * @returns {number} Number of UTF8 bytes required
+ * @returns {!Array.<number>} The number of UTF8 code points at index 0 and the number of UTF8 bytes required at index 1.
  * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If an intermediate code point is out of range
  //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.calculateUTF16asUTF8 = function(src, noAssert) {
-    var n=0;
+    var n=0, l=0;
     utfx.UTF16toUTF8(src, function(cp) {
-        n += calculateCodePoint(cp);
+        ++n; l += calculateCodePoint(cp);
     }, noAssert);
-    return n;
+    return [n,l];
 };
