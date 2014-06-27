@@ -17,7 +17,6 @@ Encodes UTF8 code points to UTF8 bytes.
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null) &#124; number* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left or a single numeric code point. 
 | dst             | *function(number)* | Bytes destination as a function successively called with the next byte 
-| **@throws**     | *TypeError*     | If arguments are invalid 
 
 ### decodeUTF8(src, dst)
 
@@ -27,7 +26,6 @@ Decodes UTF8 bytes to UTF8 code points.
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Bytes source as a function returning the next byte respectively `null` if there are no more bytes left. 
 | dst             | *function(number)* | Code points destination as a function successively called with each decoded code point. 
-| **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a starting byte is invalid in UTF8 
 | **@throws**     | *Error*         | If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes. 
 
@@ -39,7 +37,6 @@ Converts UTF16 characters to UTF8 code points.
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Characters source as a function returning the next char code respectively `null` if there are no more characters left. 
 | dst             | *function(number)* | Code points destination as a function successively called with each converted code point. 
-| **@throws**     | *TypeError*     | If arguments are invalid 
 
 ### UTF8toUTF16(src, dst)
 
@@ -49,7 +46,6 @@ Converts UTF8 code points to UTF16 characters.
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null) &#124; number* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left or a single numeric code point. 
 | dst             | *function(number)* | Characters destination as a function successively called with each converted char code. 
-| **@throws**     | *TypeError*     | If arguments are invalid or a code point is invalid 
 | **@throws**     | *RangeError*    | If a code point is out of range 
 
 ### encodeUTF16toUTF8(src, dst)
@@ -60,7 +56,6 @@ Converts and encodes UTF16 characters to UTF8 bytes.
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Characters source as a function returning the next char code respectively `null` if there are no more characters left. 
 | dst             | *function(number)* | Bytes destination as a function successively called with the next byte. 
-| **@throws**     | *TypeError*     | If arguments are invalid 
 
 ### decodeUTF8toUTF16(src, dst)
 
@@ -70,7 +65,6 @@ Decodes and converts UTF8 bytes to UTF16 characters.
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Bytes source as a function returning the next byte respectively `null` if there are no more bytes left. 
 | dst             | *function(number)* | Characters destination as a function successively called with each converted char code. 
-| **@throws**     | *TypeError*     | If arguments are invalid 
 | **@throws**     | *RangeError*    | If a starting byte is invalid in UTF8 
 | **@throws**     | *Error*         | If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes. 
 
@@ -124,8 +118,6 @@ Calculates the number of UTF8 bytes required to store UTF8 code points.
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left. 
 | **@returns**    | *number*        | The number of UTF8 bytes required 
-| **@throws**     | *TypeError*     | If arguments are invalid 
-| **@throws**     | *RangeError*    | If a code point is out of range 
 
 ### calculateUTF16asUTF8(src)
 
@@ -135,7 +127,6 @@ Calculates the number of UTF8 code points respectively UTF8 bytes required to st
 |-----------------|-----------------|---------------
 | src             | *function():(number &#124; null)* | Characters source as a function returning the next char code respectively `null` if there are no more characters left. 
 | **@returns**    | *!Array.&lt;number&gt;* | The number of UTF8 code points at index 0 and the number of UTF8 bytes required at index 1. 
-| **@throws**     | *TypeError*     | If arguments are invalid 
 
 ### arraySource(a)
 

@@ -13,17 +13,13 @@ var utfx = {};
  * @param {(function():number|null) | number} src Code points source, either as a function returning the next code point
  *  respectively `null` if there are no more code points left or a single numeric code point.
  * @param {function(number)} dst Bytes destination as a function successively called with the next byte
- * @throws {TypeError} If arguments are invalid
  //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.encodeUTF8 = function(src, dst) {
     var cp = null;
     if (typeof src === 'number')
-        cp = src,
-        src = function() { return null; };
-    if (typeof src !== 'function' || typeof dst !== 'function')
-        throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
+        cp = src, src = function() { return null; };
     while (cp !== null || (cp = src()) !== null) {
         if (cp < 0x80)
             dst(cp&0x7F);
@@ -48,7 +44,6 @@ utfx.encodeUTF8 = function(src, dst) {
  * @param {(function():number|null)} src Bytes source as a function returning the next byte respectively `null` if there
  *  are no more bytes left.
  * @param {function(number)} dst Code points destination as a function successively called with each decoded code point.
- * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If a starting byte is invalid in UTF8
  * @throws {Error} If the last sequence is truncated. Has an array property `bytes` holding the
  *  remaining bytes.
@@ -56,8 +51,6 @@ utfx.encodeUTF8 = function(src, dst) {
  * @expose
  */
 utfx.decodeUTF8 = function(src, dst) {
-    if (typeof src !== 'function' || typeof dst !== 'function')
-        throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
     var a, b, c, d, fail = function(b) {
         b = b.slice(0, b.indexOf(null));
         var err = Error(b.toString());
@@ -87,13 +80,10 @@ utfx.decodeUTF8 = function(src, dst) {
  *  `null` if there are no more characters left.
  * @param {function(number)} dst Code points destination as a function successively called with each converted code
  *  point.
- * @throws {TypeError} If arguments are invalid
  //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.UTF16toUTF8 = function(src, dst) {
-    if (typeof src !== 'function' || typeof dst !== 'function')
-        throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
     var c1, c2 = null;
     while (true) {
         if ((c1 = c2 !== null ? c2 : src()) === null)
@@ -116,7 +106,6 @@ utfx.UTF16toUTF8 = function(src, dst) {
  * @param {(function():number|null) | number} src Code points source, either as a function returning the next code point
  *  respectively `null` if there are no more code points left or a single numeric code point.
  * @param {function(number)} dst Characters destination as a function successively called with each converted char code.
- * @throws {TypeError} If arguments are invalid or a code point is invalid
  * @throws {RangeError} If a code point is out of range
  //? if (UTFX_STANDALONE)
  * @expose
@@ -124,10 +113,7 @@ utfx.UTF16toUTF8 = function(src, dst) {
 utfx.UTF8toUTF16 = function(src, dst) {
     var cp = null;
     if (typeof src === 'number')
-        cp = src,
-        src = function() { return null; };
-    if (typeof src !== 'function' || typeof dst !== 'function')
-        throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
+        cp = src, src = function() { return null; };
     while (cp !== null || (cp = src()) !== null) {
         if (cp <= 0xFFFF)
             dst(cp);
@@ -144,13 +130,10 @@ utfx.UTF8toUTF16 = function(src, dst) {
  * @param {function():number|null} src Characters source as a function returning the next char code respectively `null`
  *  if there are no more characters left.
  * @param {function(number)} dst Bytes destination as a function successively called with the next byte.
- * @throws {TypeError} If arguments are invalid
  //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.encodeUTF16toUTF8 = function(src, dst) {
-    if (typeof dst !== 'function')
-        throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
     utfx.UTF16toUTF8(src, function(cp) {
         utfx.encodeUTF8(cp, dst);
     });
@@ -161,15 +144,12 @@ utfx.encodeUTF16toUTF8 = function(src, dst) {
  * @param {function():number|null} src Bytes source as a function returning the next byte respectively `null` if there
  *  are no more bytes left.
  * @param {function(number)} dst Characters destination as a function successively called with each converted char code.
- * @throws {TypeError} If arguments are invalid
  * @throws {RangeError} If a starting byte is invalid in UTF8
  * @throws {Error} If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes.
  //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.decodeUTF8toUTF16 = function(src, dst) {
-    if (typeof dst !== 'function')
-        throw TypeError("Illegal arguments: "+(typeof arguments[0])+", "+(typeof arguments[1]));
     utfx.decodeUTF8(src, function(cp) {
         utfx.UTF8toUTF16(cp, dst);
     });
@@ -242,14 +222,10 @@ utfx.calculateCodePoint = function(cp) {
  * @param {(function():number|null)} src Code points source, either as a function returning the next code point
  *  respectively `null` if there are no more code points left.
  * @returns {number} The number of UTF8 bytes required
- * @throws {TypeError} If arguments are invalid
- * @throws {RangeError} If a code point is out of range
  //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.calculateUTF8 = function(src) {
-    if (typeof src !== 'function')
-        throw TypeError("Illegal arguments: "+(typeof arguments[0]));
     var cp, l=0;
     while ((cp = src()) !== null)
         l += utfx.calculateCodePoint(cp);
@@ -261,7 +237,6 @@ utfx.calculateUTF8 = function(src) {
  * @param {(function():number|null)} src Characters source as a function returning the next char code respectively
  *  `null` if there are no more characters left.
  * @returns {!Array.<number>} The number of UTF8 code points at index 0 and the number of UTF8 bytes required at index 1.
- * @throws {TypeError} If arguments are invalid
  //? if (UTFX_STANDALONE)
  * @expose
  */
