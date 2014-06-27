@@ -29,13 +29,6 @@
     }
 
     /**
-     * String.fromCharCode reference for compile time renaming.
-     * @type {function(...[number]):string}
-     * @inner
-     */
-    var stringFromCharCode = String.fromCharCode;
-
-    /**
      * utfx namespace.
      * @exports utfx
      * @type {!Object.<string,*>}
@@ -44,7 +37,7 @@
 
     /**
      * Encodes UTF8 code points to UTF8 bytes.
-     * @param {(function():number|null) | number} src Code points source, either as a function returning the next code point
+     * @param {(!function():number|null) | number} src Code points source, either as a function returning the next code point
      *  respectively `null` if there are no more code points left or a single numeric code point.
      * @param {function(number)} dst Bytes destination as a function successively called with the next byte
      * @expose
@@ -74,7 +67,7 @@
 
     /**
      * Decodes UTF8 bytes to UTF8 code points.
-     * @param {(function():number|null)} src Bytes source as a function returning the next byte respectively `null` if there
+     * @param {(!function():number|null)} src Bytes source as a function returning the next byte respectively `null` if there
      *  are no more bytes left.
      * @param {function(number)} dst Code points destination as a function successively called with each decoded code point.
      * @throws {RangeError} If a starting byte is invalid in UTF8
@@ -108,7 +101,7 @@
 
     /**
      * Converts UTF16 characters to UTF8 code points.
-     * @param {(function():number|null)} src Characters source as a function returning the next char code respectively
+     * @param {(!function():number|null)} src Characters source as a function returning the next char code respectively
      *  `null` if there are no more characters left.
      * @param {function(number)} dst Code points destination as a function successively called with each converted code
      *  point.
@@ -134,9 +127,9 @@
 
     /**
      * Converts UTF8 code points to UTF16 characters.
-     * @param {(function():number|null) | number} src Code points source, either as a function returning the next code point
+     * @param {(!function():number|null) | number} src Code points source, either as a function returning the next code point
      *  respectively `null` if there are no more code points left or a single numeric code point.
-     * @param {function(number)} dst Characters destination as a function successively called with each converted char code.
+     * @param {!function(number)} dst Characters destination as a function successively called with each converted char code.
      * @throws {RangeError} If a code point is out of range
      * @expose
      */
@@ -157,9 +150,9 @@
 
     /**
      * Converts and encodes UTF16 characters to UTF8 bytes.
-     * @param {function():number|null} src Characters source as a function returning the next char code respectively `null`
+     * @param {!function():number|null} src Characters source as a function returning the next char code respectively `null`
      *  if there are no more characters left.
-     * @param {function(number)} dst Bytes destination as a function successively called with the next byte.
+     * @param {!function(number)} dst Bytes destination as a function successively called with the next byte.
      * @expose
      */
     utfx.encodeUTF16toUTF8 = function(src, dst) {
@@ -170,9 +163,9 @@
 
     /**
      * Decodes and converts UTF8 bytes to UTF16 characters.
-     * @param {function():number|null} src Bytes source as a function returning the next byte respectively `null` if there
+     * @param {!function():number|null} src Bytes source as a function returning the next byte respectively `null` if there
      *  are no more bytes left.
-     * @param {function(number)} dst Characters destination as a function successively called with each converted char code.
+     * @param {!function(number)} dst Characters destination as a function successively called with each converted char code.
      * @throws {RangeError} If a starting byte is invalid in UTF8
      * @throws {Error} If the last sequence is truncated. Has an array property `bytes` holding the remaining bytes.
      * @expose
@@ -243,7 +236,7 @@
 
     /**
      * Calculates the number of UTF8 bytes required to store UTF8 code points.
-     * @param {(function():number|null)} src Code points source, either as a function returning the next code point
+     * @param {(!function():number|null)} src Code points source, either as a function returning the next code point
      *  respectively `null` if there are no more code points left.
      * @returns {number} The number of UTF8 bytes required
      * @expose
@@ -257,7 +250,7 @@
 
     /**
      * Calculates the number of UTF8 code points respectively UTF8 bytes required to store UTF16 char codes.
-     * @param {(function():number|null)} src Characters source as a function returning the next char code respectively
+     * @param {(!function():number|null)} src Characters source as a function returning the next char code respectively
      *  `null` if there are no more characters left.
      * @returns {!Array.<number>} The number of UTF8 code points at index 0 and the number of UTF8 bytes required at index 1.
      * @expose
@@ -271,9 +264,16 @@
     };
 
     /**
+     * String.fromCharCode reference for compile time renaming.
+     * @type {!function(...[number]):string}
+     * @inner
+     */
+    var stringFromCharCode = String.fromCharCode;
+
+    /**
      * Creates a source function for an array.
      * @param {!Array.<number>} a Array to read from
-     * @returns {function():number|null} Source function returning the next value respectively `null` if there are no
+     * @returns {!function():number|null} Source function returning the next value respectively `null` if there are no
      *  more values left.
      * @throws {TypeError} If the argument is invalid
      * @expose
@@ -289,7 +289,7 @@
     /**
      * Creates a destination function for an array.
      * @param {!Array.<number>} a Array to write to
-     * @returns {function(number)} Destination function successively called with the next value.
+     * @returns {!function(number)} Destination function successively called with the next value.
      * @throws {TypeError} If the argument is invalid
      * @expose
      */
@@ -302,7 +302,7 @@
     /**
      * Creates a source function for a string.
      * @param {string} s String to read from
-     * @returns {function():number|null} Source function returning the next char code respectively `null` if there are
+     * @returns {!function():number|null} Source function returning the next char code respectively `null` if there are
      *  no more characters left.
      * @throws {TypeError} If the argument is invalid
      * @expose
@@ -317,7 +317,7 @@
 
     /**
      * Creates a destination function for a string.
-     * @returns {function(number=):undefined|string} Destination function successively called with the next char code.
+     * @returns {!function(number=):undefined|string} Destination function successively called with the next char code.
      *  Returns the final string when called without arguments.
      * @expose
      */

@@ -29,19 +29,19 @@
         };
     }
 
+    //? include("lib.js");
+
     /**
      * String.fromCharCode reference for compile time renaming.
-     * @type {function(...[number]):string}
+     * @type {!function(...[number]):string}
      * @inner
      */
     var stringFromCharCode = String.fromCharCode;
 
-    //? include("lib.js");
-
     /**
      * Creates a source function for an array.
      * @param {!Array.<number>} a Array to read from
-     * @returns {function():number|null} Source function returning the next value respectively `null` if there are no
+     * @returns {!function():number|null} Source function returning the next value respectively `null` if there are no
      *  more values left.
      * @throws {TypeError} If the argument is invalid
      //? if (UTFX_STANDALONE)
@@ -58,7 +58,7 @@
     /**
      * Creates a destination function for an array.
      * @param {!Array.<number>} a Array to write to
-     * @returns {function(number)} Destination function successively called with the next value.
+     * @returns {!function(number)} Destination function successively called with the next value.
      * @throws {TypeError} If the argument is invalid
      //? if (UTFX_STANDALONE)
      * @expose
@@ -72,7 +72,7 @@
     /**
      * Creates a source function for a string.
      * @param {string} s String to read from
-     * @returns {function():number|null} Source function returning the next char code respectively `null` if there are
+     * @returns {!function():number|null} Source function returning the next char code respectively `null` if there are
      *  no more characters left.
      * @throws {TypeError} If the argument is invalid
      //? if (UTFX_STANDALONE)
@@ -88,7 +88,7 @@
 
     /**
      * Creates a destination function for a string.
-     * @returns {function(number=):undefined|string} Destination function successively called with the next char code.
+     * @returns {!function(number=):undefined|string} Destination function successively called with the next char code.
      *  Returns the final string when called without arguments.
      //? if (UTFX_STANDALONE)
      * @expose
