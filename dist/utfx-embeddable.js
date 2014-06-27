@@ -174,7 +174,6 @@ var utfx = (function() {
      * @returns {number} Valid byte value
      * @throws {TypeError} If the byte value is invalid
      * @throws {RangeError} If the byte value is out of range
-     * @expose
      */
     utfx.assertByte = function(b) {
         if (typeof b !== 'number' || b !== b)
@@ -190,7 +189,6 @@ var utfx = (function() {
      * @returns {number} Valid char code
      * @throws {TypeError} If the char code is invalid
      * @throws {RangeError} If the char code is out of range
-     * @expose
      */
     utfx.assertCharCode = function(c) {
         if (typeof c !== 'number' || c !== c)
@@ -206,7 +204,6 @@ var utfx = (function() {
      * @returns {number} Valid code point
      * @throws {TypeError} If the code point is invalid
      * @throws {RangeError} If the code point is out of range
-     * @expose
      */
     utfx.assertCodePoint = function(cp) {
         if (typeof cp !== 'number' || cp !== cp)
@@ -220,7 +217,6 @@ var utfx = (function() {
      * Calculates the byte length of an UTF8 code point.
      * @param {number} cp UTF8 code point
      * @returns {number} Byte length
-     * @expose
      */
     utfx.calculateCodePoint = function(cp) {
         return (cp < 0x80) ? 1 : (cp < 0x800) ? 2 : (cp < 0x10000) ? 3 : 4;
@@ -257,7 +253,6 @@ var utfx = (function() {
         });
         return [n,l];
     };
-
 
     return utfx;
 })();

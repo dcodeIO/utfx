@@ -295,7 +295,6 @@
         return [n,l];
     };
 
-
     /**
      * Creates a source function for an array.
      * @param {!Array.<number>} a Array to read from

@@ -181,6 +181,7 @@ utfx.decodeUTF8toUTF16 = function(src, dst) {
  * @returns {number} Valid byte value
  * @throws {TypeError} If the byte value is invalid
  * @throws {RangeError} If the byte value is out of range
+ //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.assertByte = function(b) {
@@ -197,6 +198,7 @@ utfx.assertByte = function(b) {
  * @returns {number} Valid char code
  * @throws {TypeError} If the char code is invalid
  * @throws {RangeError} If the char code is out of range
+ //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.assertCharCode = function(c) {
@@ -213,6 +215,7 @@ utfx.assertCharCode = function(c) {
  * @returns {number} Valid code point
  * @throws {TypeError} If the code point is invalid
  * @throws {RangeError} If the code point is out of range
+ //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.assertCodePoint = function(cp) {
@@ -227,6 +230,7 @@ utfx.assertCodePoint = function(cp) {
  * Calculates the byte length of an UTF8 code point.
  * @param {number} cp UTF8 code point
  * @returns {number} Byte length
+ //? if (UTFX_STANDALONE)
  * @expose
  */
 utfx.calculateCodePoint = function(cp) {
@@ -268,4 +272,3 @@ utfx.calculateUTF16asUTF8 = function(src) {
     });
     return [n,l];
 };
-
