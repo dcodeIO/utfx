@@ -41,15 +41,14 @@
     /**
      * Creates a source function for an array.
      * @param {!Array.<number>} a Array to read from
-     * @param {boolean=} noAssert Set to `true` to skip argument assertions, defaults to `false`
      * @returns {function():number|null} Source function returning the next value respectively `null` if there are no
      *  more values left.
      * @throws {TypeError} If the argument is invalid
      //? if (UTFX_STANDALONE)
      * @expose
      */
-    utfx.arraySource = function(a, noAssert) {
-        if (!noAssert && !Array.isArray(a))
+    utfx.arraySource = function(a) {
+        if (!Array.isArray(a))
             throw TypeError("Illegal argument: "+(typeof a));
         var i=0; return function() {
             return i >= a.length ? null : a[i++];
@@ -59,14 +58,13 @@
     /**
      * Creates a destination function for an array.
      * @param {!Array.<number>} a Array to write to
-     * @param {boolean=} noAssert Set to `true` to skip argument assertions, defaults to `false`
      * @returns {function(number)} Destination function successively called with the next value.
      * @throws {TypeError} If the argument is invalid
      //? if (UTFX_STANDALONE)
      * @expose
      */
-    utfx.arrayDestination = function(a, noAssert) {
-        if (!noAssert && !Array.isArray(a))
+    utfx.arrayDestination = function(a) {
+        if (!Array.isArray(a))
             throw TypeError("Illegal argument: "+(typeof a));
         return Array.prototype.push.bind(a);
     };
@@ -74,15 +72,14 @@
     /**
      * Creates a source function for a string.
      * @param {string} s String to read from
-     * @param {boolean=} noAssert Set to `true` to skip argument assertions, defaults to `false`
      * @returns {function():number|null} Source function returning the next char code respectively `null` if there are
      *  no more characters left.
      * @throws {TypeError} If the argument is invalid
      //? if (UTFX_STANDALONE)
      * @expose
      */
-    utfx.stringSource = function(s, noAssert) {
-        if (!noAssert && typeof s !== 'string')
+    utfx.stringSource = function(s) {
+        if (typeof s !== 'string')
             throw TypeError("Illegal argument: "+(typeof s));
         var i=0; return function() {
             return i >= s.length ? null : s.charCodeAt(i++);
@@ -116,7 +113,10 @@
      * @expose
      */
     utfx.fromCodePoint = function(var_args) {
-        var sd; utfx.UTF8toUTF16(utfx.arraySource(Array.prototype.slice.apply(arguments)), sd = utfx.stringDestination());
+        var sd, i=0, cps=arguments, k=cps.length;
+        utfx.UTF8toUTF16(function() {
+            return i < k ? utfx.assertCodePoint(cps[i++]) : null;
+        }, sd = utfx.stringDestination());
         return sd();
     };
 
