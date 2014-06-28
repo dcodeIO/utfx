@@ -1,7 +1,7 @@
 {
     "name": "utfx",
     "author": "Daniel Wirtz <dcode@dcode.io>",
-    "version": "0.12.1",
+    "version": "1.0.0",
     "description": "A compact library to encode, decode and convert UTF8 / UTF16 in JavaScript.",
     "main": "index.js",
     "repository": {
@@ -24,7 +24,7 @@
     },
     "scripts": {
         "build": "node node_modules/metascript/bin/metascript src/utfx.js > dist/utfx.js && node node_modules/metascript/bin/metascript src/utfx-embeddable.js > dist/utfx-embeddable.js",
-        "compile": "ccjs dist/utfx.js --compilation_level=ADVANCED_OPTIMIZATIONS > dist/utfx.min.js && ccjs dist/utfx-embeddable.js --compilation_level=SIMPLE_OPTIMIZATIONS > dist/utfx-embeddable.min.js",
+        "compile": "ccjs dist/utfx.js --compilation_level=ADVANCED_OPTIMIZATIONS > dist/utfx.min.js",
         "test": "node tests/suite.js",
         "make": "npm run-script build && npm run-script compile && npm test"
     }

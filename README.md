@@ -116,7 +116,7 @@ Calculates the number of UTF8 bytes required to store UTF8 code points.
 
 | Parameter       | Type            | Description
 |-----------------|-----------------|---------------
-| src             | *function():(number &#124; null)* | Code points source, either as a function returning the next code point respectively `null` if there are no more code points left. 
+| src             | *function():(number &#124; null)* | Code points source as a function returning the next code point respectively `null` if there are no more code points left. 
 | **@returns**    | *number*        | The number of UTF8 bytes required 
 
 ### calculateUTF16asUTF8(src)

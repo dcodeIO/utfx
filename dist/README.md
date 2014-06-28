@@ -7,5 +7,3 @@ Distributions
   
 * **[utfx-embeddable.js](https://raw.githubusercontent.com/dcodeIO/utfx/master/dist/utfx-embeddable.js)**
   is an embeddable library containing just the core functionality.
-* **[utfx-embeddable.min.js](https://raw.githubusercontent.com/dcodeIO/utfx/master/dist/utfx-embeddable.min.js)**
-  has been compiled with Closure Compiler using simple optimizations.

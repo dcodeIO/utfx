@@ -19,6 +19,11 @@ var arraySource = utfx.arraySource,
     stringDestination = utfx.stringDestination;
 
 var suite = {
+    
+    MAX_CODEPOINT: function(test) {
+        test.strictEqual(utfx.MAX_CODEPOINT, 0x10FFFF);
+        test.done();
+    },
 
     encodeUTF8: function(test) {
         // Array source and destination (implicitly tests function)
@@ -153,6 +158,42 @@ var suite = {
         );
         test.strictEqual(n[0], codepoints.length);
         test.strictEqual(n[1], bytes.length);
+        test.done();
+    },
+    
+    "assertCharCode": function(test) {
+        test.strictEqual(utfx.assertCharCode(0), 0);
+        test.strictEqual(utfx.assertCharCode(0xFFFF), 0xFFFF);
+        test.throws(function() {
+            utfx.assertCharCode("a");
+        }, TypeError);
+        test.throws(function() {
+            utfx.assertCharCode(NaN);
+        }, TypeError);
+        test.throws(function() {
+            utfx.assertCharCode(-1);
+        }, RangeError);
+        test.throws(function() {
+            utfx.assertCharCode(0xFFFF+1);
+        }, RangeError);
+        test.done();
+    },
+    
+    "assertCodePoint": function(test) {
+        test.strictEqual(utfx.assertCodePoint(0), 0);
+        test.strictEqual(utfx.assertCodePoint(utfx.MAX_CODEPOINT), utfx.MAX_CODEPOINT);
+        test.throws(function() {
+            utfx.assertCodePoint("a");
+        }, TypeError);
+        test.throws(function() {
+            utfx.assertCodePoint(NaN);
+        }, TypeError);
+        test.throws(function() {
+            utfx.assertCodePoint(-1);
+        }, RangeError);
+        test.throws(function() {
+            utfx.assertCodePoint(utfx.MAX_CODEPOINT+1);
+        }, RangeError);
         test.done();
     },
 

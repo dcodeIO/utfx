@@ -1,0 +1,1 @@
+/*! utfx-embeddable | (c) 2014 Daniel Wirtz <dcode@dcode.io> | http://www.apache.org/licenses/LICENSE-2.0.html */

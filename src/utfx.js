@@ -88,7 +88,7 @@
 
     /**
      * Creates a destination function for a string.
-     * @returns {!function(number=):undefined|string} Destination function successively called with the next char code.
+     * @returns {function(number=):undefined|string} Destination function successively called with the next char code.
      *  Returns the final string when called without arguments.
      //? if (UTFX_STANDALONE)
      * @expose
@@ -102,6 +102,40 @@
                     cs.length = 0;
             Array.prototype.push.apply(cs, arguments);
         };
+    };
+
+    /**
+     * Asserts an UTF16 char code.
+     * @param {number} c UTF16 char code
+     * @returns {number} Valid char code
+     * @throws {TypeError} If the char code is invalid
+     * @throws {RangeError} If the char code is out of range
+     //? if (UTFX_STANDALONE)
+     * @expose
+     */
+    utfx.assertCharCode = function(c) {
+        if (typeof c !== 'number' || c !== c)
+            throw TypeError("Illegal char code: "+(typeof c));
+        if (c < 0 || c > 0xFFFF)
+            throw RangeError("Illegal char code: "+c);
+        return c;
+    };
+
+    /**
+     * Asserts an UTF8 code point.
+     * @param {number} cp UTF8 code point
+     * @returns {number} Valid code point
+     * @throws {TypeError} If the code point is invalid
+     * @throws {RangeError} If the code point is out of range
+     //? if (UTFX_STANDALONE)
+     * @expose
+     */
+    utfx.assertCodePoint = function(cp) {
+        if (typeof cp !== 'number' || cp !== cp)
+            throw TypeError("Illegal code point: "+(typeof cp));
+        if (cp < 0 || cp > utfx.MAX_CODEPOINT)
+            throw RangeError("Illegal code point: "+cp);
+        return cp;
     };
 
     /**

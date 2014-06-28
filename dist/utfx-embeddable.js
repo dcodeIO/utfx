@@ -3,7 +3,7 @@
  * Released under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/utfx for details
  */
-var utfx = (function() {
+var utfx = function() {
     "use strict";
 
     /**
@@ -14,15 +14,23 @@ var utfx = (function() {
     var utfx = {};
 
     /**
+     * Maximum valid code point.
+     * @type {number}
+     * @const
+     */
+    utfx.MAX_CODEPOINT = 0x10FFFF;
+
+    /**
      * Encodes UTF8 code points to UTF8 bytes.
      * @param {(!function():number|null) | number} src Code points source, either as a function returning the next code point
      *  respectively `null` if there are no more code points left or a single numeric code point.
-     * @param {function(number)} dst Bytes destination as a function successively called with the next byte
+     * @param {!function(number)} dst Bytes destination as a function successively called with the next byte
      */
     utfx.encodeUTF8 = function(src, dst) {
         var cp = null;
         if (typeof src === 'number')
-            cp = src, src = function() { return null; };
+            cp = src,
+            src = function() { return null; };
         while (cp !== null || (cp = src()) !== null) {
             if (cp < 0x80)
                 dst(cp&0x7F);
@@ -44,9 +52,9 @@ var utfx = (function() {
 
     /**
      * Decodes UTF8 bytes to UTF8 code points.
-     * @param {(!function():number|null)} src Bytes source as a function returning the next byte respectively `null` if there
+     * @param {!function():number|null} src Bytes source as a function returning the next byte respectively `null` if there
      *  are no more bytes left.
-     * @param {function(number)} dst Code points destination as a function successively called with each decoded code point.
+     * @param {!function(number)} dst Code points destination as a function successively called with each decoded code point.
      * @throws {RangeError} If a starting byte is invalid in UTF8
      * @throws {Error} If the last sequence is truncated. Has an array property `bytes` holding the
      *  remaining bytes.
@@ -77,9 +85,9 @@ var utfx = (function() {
 
     /**
      * Converts UTF16 characters to UTF8 code points.
-     * @param {(!function():number|null)} src Characters source as a function returning the next char code respectively
+     * @param {!function():number|null} src Characters source as a function returning the next char code respectively
      *  `null` if there are no more characters left.
-     * @param {function(number)} dst Code points destination as a function successively called with each converted code
+     * @param {!function(number)} dst Code points destination as a function successively called with each converted code
      *  point.
      */
     utfx.UTF16toUTF8 = function(src, dst) {
@@ -149,51 +157,6 @@ var utfx = (function() {
     };
 
     /**
-     * Asserts a byte value.
-     * @param {number} b 8bit byte value
-     * @returns {number} Valid byte value
-     * @throws {TypeError} If the byte value is invalid
-     * @throws {RangeError} If the byte value is out of range
-     */
-    utfx.assertByte = function(b) {
-        if (typeof b !== 'number' || b !== b)
-            throw TypeError("Illegal byte: "+(typeof b));
-        if (b < -128 || b > 255)
-            throw RangeError("Illegal byte: "+b);
-        return b;
-    };
-
-    /**
-     * Asserts an UTF16 char code.
-     * @param {number} c UTF16 char code
-     * @returns {number} Valid char code
-     * @throws {TypeError} If the char code is invalid
-     * @throws {RangeError} If the char code is out of range
-     */
-    utfx.assertCharCode = function(c) {
-        if (typeof c !== 'number' || c !== c)
-            throw TypeError("Illegal char code: "+(typeof c));
-        if (c < 0 || c > 0xFFFF)
-            throw RangeError("Illegal char code: "+c);
-        return c;
-    };
-
-    /**
-     * Asserts an UTF8 code point.
-     * @param {number} cp UTF8 code point
-     * @returns {number} Valid code point
-     * @throws {TypeError} If the code point is invalid
-     * @throws {RangeError} If the code point is out of range
-     */
-    utfx.assertCodePoint = function(cp) {
-        if (typeof cp !== 'number' || cp !== cp)
-            throw TypeError("Illegal code point: "+(typeof cp));
-        if (cp < 0 || cp > 0x10FFFF)
-            throw RangeError("Illegal code point: "+cp);
-        return cp;
-    };
-
-    /**
      * Calculates the byte length of an UTF8 code point.
      * @param {number} cp UTF8 code point
      * @returns {number} Byte length
@@ -204,8 +167,8 @@ var utfx = (function() {
 
     /**
      * Calculates the number of UTF8 bytes required to store UTF8 code points.
-     * @param {(!function():number|null)} src Code points source, either as a function returning the next code point
-     *  respectively `null` if there are no more code points left.
+     * @param {(!function():number|null)} src Code points source as a function returning the next code point respectively
+     *  `null` if there are no more code points left.
      * @returns {number} The number of UTF8 bytes required
      */
     utfx.calculateUTF8 = function(src) {
@@ -230,4 +193,4 @@ var utfx = (function() {
     };
 
     return utfx;
-})();
+}();
