@@ -1,31 +1,39 @@
 {
-    "name": "utfx",
-    "author": "Daniel Wirtz <dcode@dcode.io>",
-    "version": "1.0.0",
-    "description": "A compact library to encode, decode and convert UTF8 / UTF16 in JavaScript.",
-    "main": "index.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/dcodeIO/utfx.git"
-    },
-    "bugs": {
-        "url": "https://github.com/dcodeIO/utfx/issues"
-    },
-    "keywords": ["charset", "encoding", "unicode", "utf8", "utf16"],
-    "dependencies": {},
-    "devDependencies": {
-        "testjs": "~1",
-        "metascript": "~0",
-        "closurecompiler": "~1"
-    },
-    "license": "Apache-2.0",
-    "engines": {
-        "node": ">=0.8"
-    },
-    "scripts": {
-        "build": "node node_modules/metascript/bin/metascript src/utfx.js > dist/utfx.js && node node_modules/metascript/bin/metascript src/utfx-embeddable.js > dist/utfx-embeddable.js",
-        "compile": "ccjs dist/utfx.js --compilation_level=ADVANCED_OPTIMIZATIONS > dist/utfx.min.js",
-        "test": "node tests/suite.js",
-        "make": "npm run-script build && npm run-script compile && npm test"
-    }
+  "name": "utfx",
+  "author": "Daniel Wirtz <dcode@dcode.io>",
+  "version": "1.0.1",
+  "description": "A compact library to encode, decode and convert UTF8 / UTF16 in JavaScript.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dcodeIO/utfx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dcodeIO/utfx/issues"
+  },
+  "keywords": [
+    "charset",
+    "encoding",
+    "unicode",
+    "utf8",
+    "utf16"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "closurecompiler": "~1",
+    "metascript": "~0",
+    "pretty-hrtime": "^1.0.0",
+    "testjs": "~1",
+    "utf8": "^2.1.0"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "scripts": {
+    "build": "node node_modules/metascript/bin/metascript src/wrap_standalone.js > dist/utfx.js && node node_modules/metascript/bin/metascript src/wrap_embeddable.js > dist/utfx-embeddable.js",
+    "compile": "node node_modules/closurecompiler/bin/ccjs dist/utfx.js --compilation_level=ADVANCED_OPTIMIZATIONS > dist/utfx.min.js",
+    "test": "node tests/suite.js",
+    "make": "npm run-script build && npm run-script compile && npm test"
+  }
 }

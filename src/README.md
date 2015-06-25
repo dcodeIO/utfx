@@ -1,10 +1,10 @@
 Sources
 -------
-* **[utfx.js](https://github.com/dcodeIO/utfx/blob/master/src/utfx.js)**
+* **[wrap_standalone.js](https://github.com/dcodeIO/utfx/blob/master/src/wrap_standalone.js)**
   is the wrapper for the standalone library.
   
-* **[utfx-embeddable.js](https://github.com/dcodeIO/utfx/blob/master/src/utfx-embeddable.js)**
+* **[wrap_embeddable.js](https://github.com/dcodeIO/utfx/blob/master/src/wrap_embeddable.js)**
   is the wrapper for the embeddable library.
   
-* **[lib.js](https://github.com/dcodeIO/utfx/blob/master/src/lib.js)**
-  is just the core functionality.
+* **[utfx.js](https://github.com/dcodeIO/utfx/blob/master/src/utfx.js)**
+  is the core functionality.

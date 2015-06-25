@@ -7,7 +7,7 @@
 var utfx = function() {
     "use strict";
 
-    //? include("lib.js");
+    //? include("utfx.js");
 
     return utfx;
 }();

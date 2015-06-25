@@ -19,14 +19,22 @@
  * Released under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/utfx for details
  */
-(function(global, String) {
+(function(global, factory) {
+
+    /* AMD */ if (typeof define === 'function' && define['amd'])
+        define(factory);
+    /* CommonJS */ else if (typeof require === "function" && typeof module === 'object' && module && module['exports'])
+        module['exports'] = factory();
+    /* Global */ else
+        (global["dcodeIO"] = global["dcodeIO"] || {})["utfx"] = factory();
+
+})(this, function() {
     "use strict";
 
-    if (!Array.isArray) {
+    if (!Array.isArray)
         Array.isArray = function (v) {
             return Object.prototype.toString.call(v) === "[object Array]";
         };
-    }
 
     /**
      * utfx namespace.
@@ -205,7 +213,7 @@
     utfx.calculateUTF8 = function(src) {
         var cp, l=0;
         while ((cp = src()) !== null)
-            l += utfx.calculateCodePoint(cp);
+            l += (cp < 0x80) ? 1 : (cp < 0x800) ? 2 : (cp < 0x10000) ? 3 : 4;
         return l;
     };
 
@@ -219,7 +227,7 @@
     utfx.calculateUTF16asUTF8 = function(src) {
         var n=0, l=0;
         utfx.UTF16toUTF8(src, function(cp) {
-            ++n; l += utfx.calculateCodePoint(cp);
+            ++n; l += (cp < 0x80) ? 1 : (cp < 0x800) ? 2 : (cp < 0x10000) ? 3 : 4;
         });
         return [n,l];
     };
@@ -377,13 +385,6 @@
         return utfx;
     };
 
-    if (typeof module === 'object' && module && module['exports']) {
-        module['exports'] = utfx;
-    } else if (typeof define === 'function' && define['amd']) {
-        define(utfx);
-    } else {
-        if (!global['dcodeIO']) global['dcodeIO'] = {};
-        global['dcodeIO']['utfx'] = utfx;
-    }
+    return utfx;
 
-})(this, String);
+});
